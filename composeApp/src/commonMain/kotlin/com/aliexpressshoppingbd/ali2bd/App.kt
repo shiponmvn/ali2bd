@@ -8,7 +8,7 @@ import org.koin.compose.KoinApplication
 @Composable
 fun App() {
     KoinApplication(application = {
-        modules(appModule())
+        modules(appModule)
     }) {
         LoginScreen(
             onLoginSuccess = {

@@ -50,10 +50,9 @@ kotlin {
             // Serialization
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
-            // Koin
+            // Koin - multiplatform compatible
             implementation("io.insert-koin:koin-core:3.5.0")
             implementation("io.insert-koin:koin-compose:1.1.0")
-            implementation("io.insert-koin:koin-androidx-compose:3.5.0")
 
             // Coroutines
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
@@ -63,6 +62,8 @@ kotlin {
             // Ktor Android Engine
             implementation("io.ktor:ktor-client-android:2.3.5")
             implementation("io.insert-koin:koin-android:3.5.0")
+            // Android-specific Koin Compose integration
+            implementation("io.insert-koin:koin-androidx-compose:3.5.0")
         }
 
         iosMain.dependencies {

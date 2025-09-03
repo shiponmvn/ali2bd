@@ -36,28 +36,27 @@ class LoginViewModel(
         _uiState.update { it.copy(isLoading = true, error = null) }
 
         viewModelScope.launch {
-            loginUseCase(username, password).collect { result ->
-                result.fold(
-                    onSuccess = { loginResponse ->
-                        _uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                isLoggedIn = true,
-                                user = loginResponse.user,
-                                error = null
-                            )
-                        }
-                    },
-                    onFailure = { throwable ->
-                        _uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                error = throwable.message ?: "Login failed"
-                            )
-                        }
+            val result = loginUseCase(username, password)
+            result.fold(
+                onSuccess = { loginResponse ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isLoggedIn = true,
+                            user = loginResponse.user,
+                            error = null
+                        )
                     }
-                )
-            }
+                },
+                onFailure = { throwable ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = throwable.message ?: "Login failed"
+                        )
+                    }
+                }
+            )
         }
     }
 }

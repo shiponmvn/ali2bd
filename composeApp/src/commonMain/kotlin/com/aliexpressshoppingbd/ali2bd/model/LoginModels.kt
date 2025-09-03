@@ -29,3 +29,18 @@ data class ErrorResponse(
     val status: Int,
     val message: String
 )
+
+@Serializable
+data class RegisterRequest(
+    val username: String,
+    val email: String,
+    val password: String,
+    val confirmPassword: String,
+    val name: String
+)
+
+@Serializable
+data class RegisterResponse(
+    val message: String,
+    val user: UserInfo
+)
