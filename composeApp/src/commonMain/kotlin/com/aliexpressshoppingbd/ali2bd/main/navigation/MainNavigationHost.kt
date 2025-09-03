@@ -22,6 +22,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.aliexpressshoppingbd.ali2bd.main.components.MainAppBar
 import com.aliexpressshoppingbd.ali2bd.main.components.MainBottomNavigationBar
 import com.aliexpressshoppingbd.ali2bd.main.screens.AccountScreen
 import com.aliexpressshoppingbd.ali2bd.main.screens.CartScreen
@@ -35,6 +36,7 @@ fun MainNavigationHost(
 ) {
     var currentDestination by remember { mutableStateOf<MainNavigationDestinations>(MainNavigationDestinations.Home) }
     var cartItemCount by remember { mutableStateOf(3) } // Example cart count
+    var notificationCount by remember { mutableStateOf(5) } // Example notification count
 
     val navigationItems = listOf(
         MainNavigationItem(
@@ -67,6 +69,20 @@ fun MainNavigationHost(
 
     Scaffold(
         modifier = modifier,
+        topBar = {
+            MainAppBar(
+                onSearchClick = {
+                    // Handle search click (no longer needed with integrated search)
+                },
+                onNotificationClick = {
+                    // Handle notification click
+                },
+                onWishlistClick = {
+                    // Handle wishlist/favorites click
+                },
+                notificationCount = notificationCount
+            )
+        },
         bottomBar = {
             MainBottomNavigationBar(
                 items = navigationItems,
