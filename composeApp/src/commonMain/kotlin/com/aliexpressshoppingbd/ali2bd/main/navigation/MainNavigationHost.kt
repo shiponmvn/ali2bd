@@ -69,7 +69,7 @@ fun MainNavigationHost(
 
     Scaffold(
         modifier = modifier,
-        topBar = {
+       /* topBar = {
             MainAppBar(
                 onSearchClick = {
                     // Handle search click (no longer needed with integrated search)
@@ -82,7 +82,7 @@ fun MainNavigationHost(
                 },
                 notificationCount = notificationCount
             )
-        },
+        },*/
         bottomBar = {
             MainBottomNavigationBar(
                 items = navigationItems,
