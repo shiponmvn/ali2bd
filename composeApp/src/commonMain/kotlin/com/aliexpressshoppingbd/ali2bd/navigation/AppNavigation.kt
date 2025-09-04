@@ -9,4 +9,7 @@ sealed class AppNavigation {
 
     @Serializable
     data object Main : AppNavigation()
+
+    @Serializable
+    data object Search : AppNavigation()
 }

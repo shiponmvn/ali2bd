@@ -27,6 +27,7 @@ import com.aliexpressshoppingbd.ali2bd.main.components.MainBottomNavigationBar
 import com.aliexpressshoppingbd.ali2bd.main.screens.AccountScreen
 import com.aliexpressshoppingbd.ali2bd.main.screens.CartScreen
 import com.aliexpressshoppingbd.ali2bd.main.screens.CategoryScreen
+import com.aliexpressshoppingbd.ali2bd.main.screens.HomeNav
 import com.aliexpressshoppingbd.ali2bd.main.screens.HomeScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchScreen
@@ -106,36 +107,31 @@ fun MainNavigationHost(
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = MainNavigationDestinations.Home,
+            startDestination = MainNavigationDestinations.Home.toString(),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            composable<MainNavigationDestinations.Home> {
-                HomeScreen()
+            composable(route = MainNavigationDestinations.Home.toString()) {
+                HomeScreen(navController = navController)
             }
 
-            composable<MainNavigationDestinations.Category> {
+            composable(route = MainNavigationDestinations.Category.toString()) {
                 CategoryScreen()
             }
 
-            composable<MainNavigationDestinations.Cart> {
+            composable(route = MainNavigationDestinations.Cart.toString()) {
                 CartScreen()
             }
 
-            composable<MainNavigationDestinations.Account> {
+            composable(route = MainNavigationDestinations.Account.toString()) {
                 AccountScreen()
             }
 
-            composable<MainNavigationDestinations.Search> {
+            composable(route = MainNavigationDestinations.Search.toString()) {
                 val searchViewModel: SearchViewModel = koinInject()
-
                 SearchScreen(
-                    viewModel = searchViewModel,
-                    onNavigateBack = { navController.popBackStack() },
-                    onSearchItemClick = { query ->
-                        // Handle search result click
-                    }
+
                 )
             }
         }

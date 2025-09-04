@@ -36,19 +36,16 @@ import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmode
 
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel,
-    onNavigateBack: () -> Unit,
-    onSearchItemClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+/*    val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.loadSystemConfig()
-    }
+    }*/
 
     Scaffold(
-        topBar = {
+       /* topBar = {
             SearchBar(
                 query = uiState.searchQuery,
                 onQueryChange = viewModel::updateSearchQuery,
@@ -60,146 +57,18 @@ fun SearchScreen(
                 onBackClick = onNavigateBack,
                 onClearClick = { viewModel.updateSearchQuery("") }
             )
-        }
+        }*/
     ) { paddingValues ->
         Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(Color(0xFFF5F5F5))
+
         ) {
-            when {
-                uiState.isLoading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-                uiState.error != null -> {
-                    Text(
-                        text = "Error: ${uiState.error}",
-                        color = Color.Red,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-                else -> {
-                    if (uiState.searchQuery.isEmpty()) {
-                        SearchContent(
-                            recentSearches = uiState.recentSearches,
-                            popularSearches = uiState.popularSearches,
-                            onSearchItemClick = onSearchItemClick,
-                            onClearHistory = viewModel::clearSearchHistory
-                        )
-                    } else {
-                        SearchSuggestions(
-                            suggestions = uiState.searchSuggestions,
-                            onSuggestionClick = onSearchItemClick
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun SearchContent(
-    recentSearches: List<String>,
-    popularSearches: List<String>,
-    onSearchItemClick: (String) -> Unit,
-    onClearHistory: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        if (recentSearches.isNotEmpty()) {
-            item {
-                SearchHistorySection(
-                    recentSearches = recentSearches,
-                    onSearchItemClick = onSearchItemClick,
-                    onClearHistory = onClearHistory
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-        }
-
-        if (popularSearches.isNotEmpty()) {
-            item {
-                Text(
-                    text = "Popular Searches",
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.height((popularSearches.size * 30).dp)
-                ) {
-                    items(popularSearches) { search ->
-                        SearchSuggestionItem(
-                            suggestion = search,
-                            onClick = { onSearchItemClick(search) }
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun SearchHistorySection(
-    recentSearches: List<String>,
-    onSearchItemClick: (String) -> Unit,
-    onClearHistory: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        Box(modifier = Modifier.fillMaxWidth()) {
+            // Main content goes here
             Text(
-                text = "Recent Searches",
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.CenterStart)
+                text = "Search Screen Content",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.align(Alignment.Center)
             )
-
-            Text(
-                text = "Clear",
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 8.dp),
-                fontWeight = FontWeight.Medium,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        recentSearches.forEach { search ->
-            SearchHistoryItem(
-                search = search,
-                onClick = { onSearchItemClick(search) }
-            )
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
         }
     }
 }
 
-@Composable
-private fun SearchSuggestions(
-    suggestions: List<String>,
-    onSuggestionClick: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp)
-    ) {
-        items(suggestions) { suggestion ->
-            SearchSuggestionItem(
-                suggestion = suggestion,
-                onClick = { onSuggestionClick(suggestion) }
-            )
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
-        }
-    }
-}

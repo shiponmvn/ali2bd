@@ -11,3 +11,4 @@ val presentationModule = module {
     factory { RegisterViewModel(get()) }
     factory { SearchViewModel(get()) }
 }
+

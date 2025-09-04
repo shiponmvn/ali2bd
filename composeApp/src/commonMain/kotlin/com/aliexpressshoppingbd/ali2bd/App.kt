@@ -15,8 +15,12 @@ import coil3.fetch.NetworkFetcher
 import com.aliexpressshoppingbd.ali2bd.di.appModule
 import com.aliexpressshoppingbd.ali2bd.navigation.AppNavigation
 import com.aliexpressshoppingbd.ali2bd.main.MainScreen
+import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
+import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
+import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.splash.SplashScren
 import org.koin.compose.KoinApplication
+import org.koin.compose.koinInject
 import presentation.theme.AppTheme
 
 @Composable
@@ -54,6 +58,12 @@ fun App() {
                             navigator.popBackStack()
                             navigator.navigate(AppNavigation.Splash)
                         }
+                    }
+                    composable<AppNavigation.Search> {
+                        val searchViewModel: SearchViewModel = koinInject()
+                        SearchScreen(
+
+                        )
                     }
                 }
             }
