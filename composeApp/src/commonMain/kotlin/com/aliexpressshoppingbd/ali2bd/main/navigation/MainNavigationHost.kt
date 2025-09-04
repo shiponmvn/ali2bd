@@ -28,6 +28,9 @@ import com.aliexpressshoppingbd.ali2bd.main.screens.AccountScreen
 import com.aliexpressshoppingbd.ali2bd.main.screens.CartScreen
 import com.aliexpressshoppingbd.ali2bd.main.screens.CategoryScreen
 import com.aliexpressshoppingbd.ali2bd.main.screens.HomeScreen
+import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
+import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchScreen
+import org.koin.compose.koinInject
 
 @Composable
 fun MainNavigationHost(
@@ -122,6 +125,18 @@ fun MainNavigationHost(
 
             composable<MainNavigationDestinations.Account> {
                 AccountScreen()
+            }
+
+            composable<MainNavigationDestinations.Search> {
+                val searchViewModel: SearchViewModel = koinInject()
+
+                SearchScreen(
+                    viewModel = searchViewModel,
+                    onNavigateBack = { navController.popBackStack() },
+                    onSearchItemClick = { query ->
+                        // Handle search result click
+                    }
+                )
             }
         }
     }

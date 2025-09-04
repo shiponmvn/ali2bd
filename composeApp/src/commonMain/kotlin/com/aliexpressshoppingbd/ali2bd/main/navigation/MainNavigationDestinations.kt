@@ -15,4 +15,7 @@ sealed class MainNavigationDestinations {
 
     @Serializable
     data object Account : MainNavigationDestinations()
+
+    @Serializable
+    data object Search : MainNavigationDestinations()
 }

@@ -26,10 +26,14 @@ import com.aliexpressshoppingbd.ali2bd.main.components.HomeSearchSection
 import com.aliexpressshoppingbd.ali2bd.main.components.Product
 import com.aliexpressshoppingbd.ali2bd.main.components.PromoBanner
 import com.aliexpressshoppingbd.ali2bd.main.components.PromotionalBannerSection
+import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController()
 ) {
     var cartItemCount by remember { mutableStateOf(3) }
 
@@ -69,7 +73,8 @@ fun HomeScreen(
         item {
             HomeSearchSection(
                 onSearchClick = {
-                    // Handle search click
+                    // Navigate to Search screen
+                    navController.navigate(MainNavigationDestinations.Search)
                 },
                 onVoiceClick = {
                     // Handle voice search
