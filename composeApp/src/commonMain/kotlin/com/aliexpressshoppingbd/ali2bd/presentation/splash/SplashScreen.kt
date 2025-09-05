@@ -17,11 +17,8 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScren(navigateToMain: () -> Unit) {
-    LaunchedEffect(Unit) {
-        delay(2000) // Show splash for 2 seconds
-        navigateToMain()
-    }
+fun SplashScreen() {
+
 
     Box(
         modifier = Modifier

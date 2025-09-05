@@ -13,12 +13,12 @@ import coil3.ImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.fetch.NetworkFetcher
 import com.aliexpressshoppingbd.ali2bd.di.appModule
-import com.aliexpressshoppingbd.ali2bd.navigation.AppNavigation
-import com.aliexpressshoppingbd.ali2bd.main.MainScreen
 import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
+import com.aliexpressshoppingbd.ali2bd.navigation.AppNavigation
+import com.aliexpressshoppingbd.ali2bd.presentation.main.screen.MainNav
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchScreen
-import com.aliexpressshoppingbd.ali2bd.presentation.splash.SplashScren
+import com.aliexpressshoppingbd.ali2bd.presentation.splash.SplashNav
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
@@ -48,16 +48,16 @@ fun App() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     composable<AppNavigation.Splash> {
-                        SplashScren (navigateToMain = {
+                        SplashNav (navigateToMain = {
                             navigator.popBackStack()
                             navigator.navigate(AppNavigation.Main)
                         })
                     }
                     composable<AppNavigation.Main> {
-                        MainScreen {
-                            navigator.popBackStack()
-                            navigator.navigate(AppNavigation.Splash)
-                        }
+                        MainNav(navigateToSearch = {
+                            navigator.navigate(AppNavigation.Search)
+
+                        })
                     }
                     composable<AppNavigation.Search> {
                         val searchViewModel: SearchViewModel = koinInject()

@@ -1,4 +1,4 @@
-package com.aliexpressshoppingbd.ali2bd.main.navigation
+package com.aliexpressshoppingbd.ali2bd.presentation.main.screen
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,30 +18,31 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.PopUpToBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aliexpressshoppingbd.ali2bd.main.components.MainAppBar
 import com.aliexpressshoppingbd.ali2bd.main.components.MainBottomNavigationBar
+import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
+import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationItem
 import com.aliexpressshoppingbd.ali2bd.main.screens.AccountScreen
 import com.aliexpressshoppingbd.ali2bd.main.screens.CartScreen
 import com.aliexpressshoppingbd.ali2bd.main.screens.CategoryScreen
-import com.aliexpressshoppingbd.ali2bd.main.screens.HomeNav
-import com.aliexpressshoppingbd.ali2bd.main.screens.HomeScreen
+import com.aliexpressshoppingbd.ali2bd.presentation.home.screen.HomeScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchScreen
 import org.koin.compose.koinInject
 
 @Composable
-fun MainNavigationHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+fun MainNav(
+    navigateToSearch: () -> Unit
 ) {
-    var currentDestination by remember { mutableStateOf<MainNavigationDestinations>(MainNavigationDestinations.Home) }
+    var currentDestination by remember { mutableStateOf<MainNavigationDestinations>(
+        MainNavigationDestinations.Home) }
     var cartItemCount by remember { mutableStateOf(3) } // Example cart count
     var notificationCount by remember { mutableStateOf(5) } // Example notification count
-
+    val navController = rememberNavController()
     val navigationItems = listOf(
         MainNavigationItem(
             destination = MainNavigationDestinations.Home,
@@ -72,7 +73,6 @@ fun MainNavigationHost(
     )
 
     Scaffold(
-        modifier = modifier,
        /* topBar = {
             MainAppBar(
                 onSearchClick = {
@@ -91,12 +91,13 @@ fun MainNavigationHost(
             MainBottomNavigationBar(
                 items = navigationItems,
                 currentDestination = currentDestination,
-                onItemClick = { destination ->
+                onItemClick = {
+                    destination ->
                     currentDestination = destination
                     navController.navigate(destination) {
                         // Pop up to start destination to avoid building up a large stack
-                        popUpTo(MainNavigationDestinations.Home) {
-                            saveState = true
+                        NavOptionsBuilder().popUpTo(MainNavigationDestinations.Home) {
+                            PopUpToBuilder().saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true
@@ -107,13 +108,17 @@ fun MainNavigationHost(
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = MainNavigationDestinations.Home.toString(),
+            startDestination = MainNavigationDestinations.Home,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            composable(route = MainNavigationDestinations.Home.toString()) {
-                HomeScreen(navController = navController)
+            composable<MainNavigationDestinations.Home> {
+                HomeScreen(navController = navController,
+                    navigateToSearch = {
+                       navigateToSearch()
+                    }
+                )
             }
 
             composable(route = MainNavigationDestinations.Category.toString()) {
@@ -128,12 +133,7 @@ fun MainNavigationHost(
                 AccountScreen()
             }
 
-            composable(route = MainNavigationDestinations.Search.toString()) {
-                val searchViewModel: SearchViewModel = koinInject()
-                SearchScreen(
 
-                )
-            }
         }
     }
 }

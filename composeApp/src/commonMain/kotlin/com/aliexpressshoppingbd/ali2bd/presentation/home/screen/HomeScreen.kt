@@ -1,10 +1,7 @@
-package com.aliexpressshoppingbd.ali2bd.main.screens
+package com.aliexpressshoppingbd.ali2bd.presentation.home.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.NavHost
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChildCare
@@ -30,16 +27,12 @@ import com.aliexpressshoppingbd.ali2bd.main.components.PromoBanner
 import com.aliexpressshoppingbd.ali2bd.main.components.PromotionalBannerSection
 import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
-import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchScreen
-import org.koin.compose.koinInject
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    navigateToSearch: () -> Unit
 ) {
     var cartItemCount by remember { mutableStateOf(3) }
 
@@ -79,8 +72,8 @@ fun HomeScreen(
         item {
             HomeSearchSection(
                 onSearchClick = {
+                    navigateToSearch();
                     // Navigate to Search screen
-                    navController.navigate(MainNavigationDestinations.Search.toString())
                 },
                 onVoiceClick = {
                     // Handle voice search
