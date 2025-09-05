@@ -62,7 +62,15 @@ fun App() {
                     composable<AppNavigation.Search> {
                         val searchViewModel: SearchViewModel = koinInject()
                         SearchScreen(
-
+                            viewModel = searchViewModel,
+                            onNavigateBack = {
+                                navigator.popBackStack()
+                            },
+                            onSearchItemClick = { query ->
+                                // Handle search item click
+                                // You might want to navigate to results or perform search
+                                println("Search for: $query")
+                            }
                         )
                     }
                 }

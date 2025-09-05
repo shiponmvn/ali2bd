@@ -3,7 +3,6 @@ package com.aliexpressshoppingbd.ali2bd.data.network
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
@@ -22,9 +21,7 @@ fun createHttpClient(): HttpClient {
                 ignoreUnknownKeys = true
             })
         }
-        install(Logging) {
-            level = LogLevel.ALL
-        }
+
         defaultRequest {
             url(ApiService.BASE_URL)
         }

@@ -40,11 +40,9 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(compose.materialIconsExtended)
 
-            // Ktor
-            implementation("io.ktor:ktor-client-core:2.3.5")
-            implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
-            implementation("io.ktor:ktor-client-logging:2.3.5")
+            // Ktor - using a consistent version for all components
+            val ktorVersion = "2.3.7"
+
 
             // Serialization
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
@@ -55,10 +53,15 @@ kotlin {
 
             // Coroutines
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+            implementation("media.kamel:kamel-image-default:1.0.7")
 
             implementation(libs.coil3)
             implementation(libs.coil3.network)
             implementation(libs.compose.navigation)
+
+            implementation(libs.ktor.core)
+            implementation(libs.ktor.serialization)
+            implementation(libs.ktor.negotiation)
         }
 
         androidMain.dependencies {

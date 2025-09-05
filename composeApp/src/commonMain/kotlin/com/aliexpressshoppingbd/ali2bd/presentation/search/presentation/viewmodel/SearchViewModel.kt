@@ -3,7 +3,9 @@ package com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmod
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.toMutableStateList
 import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.SystemConfigItem
+import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.ValueData
 import com.aliexpressshoppingbd.ali2bd.presentation.search.domain.usecase.system_config.SystemConfigUseCase
+import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.ShoppingPlatform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,18 +58,12 @@ class SearchViewModel(
             try {
                 systemConfigUseCase.invoke().collect { result ->
                     result.onSuccess { response ->
-                        val popularSearches = extractPopularSearches(response.data)
-                        val searchSuggestions = extractSearchSuggestions(response.data)
+                        val popularSearches = extractCountriesSection(response.data)
 
                         _uiState.update { currentState ->
                             currentState.copy(
                                 isLoading = false,
-                                popularSearches = popularSearches,
-                                searchSuggestions = if (_uiState.value.searchQuery.isNotEmpty()) {
-                                    filterSuggestions(_uiState.value.searchQuery, searchSuggestions)
-                                } else {
-                                    emptyList()
-                                }
+                                countrySelection = popularSearches,
                             )
                         }
                     }.onFailure { error ->
@@ -113,30 +109,15 @@ class SearchViewModel(
         return suggestions.filter { it.contains(query, ignoreCase = true) }
     }
 
-    private fun extractPopularSearches(configItems: List<SystemConfigItem>): List<String> {
-        val popularSearchesItem = configItems.find { it.key == "popular_searches" }
 
-        return try {
-            popularSearchesItem?.value?.jsonArray?.mapNotNull {
-                (it as? JsonPrimitive)?.content
-            } ?: defaultSearchSuggestions
-        } catch (e: Exception) {
-            defaultSearchSuggestions
-        }
+    private fun extractCountriesSection(configItems: List<SystemConfigItem>): List<ValueData> {
+        val countriesItem = configItems.find { it.key == "countries_section" }
+        return countriesItem?.value ?: emptyList()
     }
 
-    private fun extractSearchSuggestions(configItems: List<SystemConfigItem>): List<String> {
-        val suggestionsItem = configItems.find { it.key == "search_suggestions" }
 
-        return try {
-            suggestionsItem?.value?.jsonArray?.mapNotNull {
-                (it as? JsonPrimitive)?.content
-            } ?: defaultSearchSuggestions
-        } catch (e: Exception) {
-            defaultSearchSuggestions
-        }
-    }
 }
+
 
 data class SearchUiState(
     val searchQuery: String = "",
@@ -144,5 +125,6 @@ data class SearchUiState(
     val error: String? = null,
     val recentSearches: List<String> = emptyList(),
     val popularSearches: List<String> = emptyList(),
-    val searchSuggestions: List<String> = emptyList()
+    val searchSuggestions: List<String> = emptyList(),
+    val countrySelection : List<ValueData> = emptyList()
 )

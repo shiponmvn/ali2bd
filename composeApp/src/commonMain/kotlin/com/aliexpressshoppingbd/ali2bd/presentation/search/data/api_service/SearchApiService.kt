@@ -9,13 +9,15 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.client.statement.HttpResponse
 
-class SearchApiService(
-    private val httpClient: HttpClient
-) {
-    suspend fun getSystemConfig(): SystemConfigResponse {
-        return httpClient.get("https://edge.ali2bd.com/api/public/v1/system/configs") {
-            contentType(ContentType.Application.Json)
-        }.body()
+interface SearchApiService {
+    companion object {
+        private const val TAG = "SearchApiService"
     }
+
+    suspend fun getSystemConfig(): SystemConfigResponse
+
+    // Logging functions
+
 }

@@ -1,37 +1,47 @@
 package com.aliexpressshoppingbd.ali2bd.presentation.search.data.res
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class SystemConfigResponse(
-    val status: String,
-    val data: List<SystemConfigItem>
+    @SerialName("status") val status: String,
+    @SerialName("data") val data: List<SystemConfigItem> = listOf()
 )
 
 @Serializable
 data class ErrorResponse(
-    val status: Int,
-    val message: String
+    @SerialName("status") val status: Int,
+    @SerialName("message") val message: String
 )
 
 @Serializable
 data class SystemConfigItem(
-    val id: Int,
-    val name: String,
-    val description: String? = null,
-    val group: String,
-    val type: String? = null,
-    val key: String,
-    val value: JsonElement  // Using JsonElement to handle different value types
+    @SerialName("id") val id: Int,
+    @SerialName("name") val name: String,
+    @SerialName("description") val description: String? = null,
+    @SerialName("group") val group: String,
+    @SerialName("type") val type: String? = null,
+    @SerialName("key") val key: String,
+    @SerialName("value") val value: List<ValueData>? = listOf() // Using JsonElement to handle different value types and making it nullable
+)
+
+@Serializable
+data class ValueData(
+    @SerialName("key") val key: String? = null,
+    @SerialName("link") val link: String? = null,
+    @SerialName("label") val label: String? = null,
+    @SerialName("image") val image: String? = null,
+    @SerialName("fileId") val fileId: String? = null
 )
 
 // Helper classes for parsing specific config item types
 @Serializable
 data class ConfigObject(
-    val key: String? = null,
-    val label: String? = null,
-    val image: String? = null,
-    val fileId: String? = null,
-    val link: String? = null
+    @SerialName("key") val key: String? = null,
+    @SerialName("label") val label: String? = null,
+    @SerialName("image") val image: String? = null,
+    @SerialName("fileId") val fileId: String? = null,
+    @SerialName("link") val link: String? = null
 )
