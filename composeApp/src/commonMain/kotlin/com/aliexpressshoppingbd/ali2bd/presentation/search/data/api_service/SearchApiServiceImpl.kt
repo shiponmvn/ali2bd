@@ -30,16 +30,14 @@ class SearchApiServiceImpl(
             val response = httpClient.get {
                 url {
                     takeFrom("https://edge.ali2bd.com/api/public/v1/system/configs")
-
                 }
                 contentType(ContentType.Application.Json)
             }
-            val res: SystemConfigResponse = response.body();
-            return res;
+
             println("SearchApiServiceImpl: Received response with status: ${response.status}")
 
             try {
-                val configResponse = response.body<SystemConfigResponse>()
+                val configResponse: SystemConfigResponse = response.body()
                 println("SearchApiServiceImpl: Successfully parsed response body")
                 return configResponse
             } catch (e: Exception) {

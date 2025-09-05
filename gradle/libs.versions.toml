@@ -14,7 +14,7 @@ coil3-io = "3.0.0-alpha01"
 composeMultiplatform = "1.8.2"
 junit = "4.13.2"
 kotlin = "2.2.10"
-ktor = "2.3.7"
+ktor = "3.0.1"
 
 
 [libraries]

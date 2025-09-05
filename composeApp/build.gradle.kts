@@ -40,10 +40,6 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(compose.materialIconsExtended)
 
-            // Ktor - using a consistent version for all components
-            val ktorVersion = "2.3.7"
-
-
             // Serialization
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
@@ -59,22 +55,24 @@ kotlin {
             implementation(libs.coil3.network)
             implementation(libs.compose.navigation)
 
+            // Ktor dependencies from version catalog
             implementation(libs.ktor.core)
             implementation(libs.ktor.serialization)
             implementation(libs.ktor.negotiation)
+            implementation(libs.ktor.logging) // Adding ktor-logging dependency
         }
 
         androidMain.dependencies {
-            // Ktor Android Engine
-            implementation("io.ktor:ktor-client-android:2.3.5")
+            // Ktor Android Engine using version from catalog
+            implementation(libs.ktor.okhttp)
             implementation("io.insert-koin:koin-android:3.5.0")
             // Android-specific Koin Compose integration
             implementation("io.insert-koin:koin-androidx-compose:3.5.0")
         }
 
         iosMain.dependencies {
-            // Ktor iOS Engine
-            implementation("io.ktor:ktor-client-darwin:2.3.5")
+            // Ktor iOS Engine using version from catalog
+            implementation(libs.ktor.darwin.ios)
         }
 
         commonTest.dependencies {
