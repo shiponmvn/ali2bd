@@ -20,9 +20,8 @@ data class SystemConfigResponse(
 
 @Serializable
 data class ErrorResponse(
-    @SerialName("status") val status: Int,
-    @SerialName("message") val message: String
-)
+    @SerialName("message") override val message: String?
+) : Throwable(message)
 
 @Serializable
 data class SystemConfigItem(

@@ -1,5 +1,6 @@
-package com.aliexpressshoppingbd.ali2bd.presentation.search.data.res
+package com.aliexpressshoppingbd.ali2bd.common.extentions
 
+import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.ValueData
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -7,7 +8,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 /**

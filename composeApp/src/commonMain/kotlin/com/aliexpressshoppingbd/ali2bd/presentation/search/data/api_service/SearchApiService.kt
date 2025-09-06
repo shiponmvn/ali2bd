@@ -17,7 +17,4 @@ interface SearchApiService {
     }
 
     suspend fun getSystemConfig(): SystemConfigResponse
-
-    // Logging functions
-
 }

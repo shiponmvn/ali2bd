@@ -10,13 +10,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aliexpressshoppingbd.ali2bd.navigation.AppNavigation
-import com.aliexpressshoppingbd.ali2bd.presentation.login.LoginViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
 import org.koin.compose.koinInject
 
 @Composable
-internal fun SplashNav(viewModel: LoginViewModel = koinInject(), navigateToMain: () -> Unit) {
+internal fun SplashNav( navigateToMain: () -> Unit) {
     val navigator = rememberNavController()
 
     LaunchedEffect(Unit) {

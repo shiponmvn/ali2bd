@@ -1,12 +1,9 @@
 package com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.toMutableStateList
 import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.SystemConfigItem
 import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.ValueData
-import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.getValueAsList
+import com.aliexpressshoppingbd.ali2bd.common.extentions.getValueAsList
 import com.aliexpressshoppingbd.ali2bd.presentation.search.domain.usecase.system_config.SystemConfigUseCase
-import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.ShoppingPlatform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,9 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonPrimitive
 
 class SearchViewModel(
     private val systemConfigUseCase: SystemConfigUseCase,
