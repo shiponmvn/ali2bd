@@ -37,13 +37,7 @@ class SearchViewModel(
 
     init {
         // Initialize with default values until API data is loaded
-        _uiState.update { currentState ->
-            currentState.copy(
-                recentSearches = defaultRecentSearches,
-                searchSuggestions = defaultSearchSuggestions,
-                popularSearches = defaultSearchSuggestions
-            )
-        }
+
     }
 
     fun loadSystemConfig() {
@@ -54,9 +48,11 @@ class SearchViewModel(
                 systemConfigUseCase.invoke().collect { result ->
                     result.onSuccess { response ->
                         val popularSearches = extractCountriesSection(response.data)
-
                         _uiState.update { currentState ->
                             currentState.copy(
+                                recentSearches = defaultRecentSearches,
+                                searchSuggestions = defaultSearchSuggestions,
+                                popularSearches = defaultSearchSuggestions,
                                 isLoading = false,
                                 countrySelection = popularSearches,
                             )
