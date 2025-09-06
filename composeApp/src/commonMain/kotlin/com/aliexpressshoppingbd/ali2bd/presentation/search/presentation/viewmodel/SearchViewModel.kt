@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.toMutableStateList
 import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.SystemConfigItem
 import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.ValueData
+import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.getValueAsList
 import com.aliexpressshoppingbd.ali2bd.presentation.search.domain.usecase.system_config.SystemConfigUseCase
 import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.ShoppingPlatform
 import kotlinx.coroutines.CoroutineScope
@@ -112,8 +113,10 @@ class SearchViewModel(
 
     private fun extractCountriesSection(configItems: List<SystemConfigItem>): List<ValueData> {
         val countriesItem = configItems.find { it.key == "countries_section" }
-        return countriesItem?.value ?: emptyList()
+        val valueList = countriesItem?.rawValue?.getValueAsList().orEmpty()
+        return valueList.filter { it.key == "country" }
     }
+
 
 
 }

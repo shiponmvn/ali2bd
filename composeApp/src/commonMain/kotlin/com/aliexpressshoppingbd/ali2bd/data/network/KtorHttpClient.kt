@@ -32,11 +32,11 @@ object KtorHttpClient {
             socketTimeoutMillis = timeout
         }
 
-
-
+        // Add this log to verify when the HttpClient is created
+        println("KtorHttpClient: Creating new HTTP client instance")
         install(ResponseObserver) {
             onResponse { response ->
-                println("AppDebug HTTP ResponseObserver status: ${response.status.value}")
+                println("AppDebug HTTP ResponseObserver statu: ${response.status.value}")
             }
         }
 
@@ -54,19 +54,17 @@ object KtorHttpClient {
                 val statusCode = response.status.value
 
                 if (statusCode == 401) {
+                    // Handle authentication if needed
                 }
+
+                // Log all responses for debugging
+                println("Response validation: HTTP $statusCode")
             }
         }
 
+        // Use the custom Json configuration from JsonConfig
         install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-                explicitNulls = false
-                encodeDefaults = true
-                classDiscriminator = "#class"
-            })
+            json(JsonConfig.customJson)
         }
 
         defaultRequest {
