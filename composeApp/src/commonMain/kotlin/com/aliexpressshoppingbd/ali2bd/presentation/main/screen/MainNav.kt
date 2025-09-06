@@ -2,6 +2,7 @@ package com.aliexpressshoppingbd.ali2bd.presentation.main.screen
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Category
@@ -73,20 +74,22 @@ fun MainNav(
     )
 
     Scaffold(
-       /* topBar = {
-            MainAppBar(
-                onSearchClick = {
-                    // Handle search click (no longer needed with integrated search)
-                },
-                onNotificationClick = {
-                    // Handle notification click
-                },
-                onWishlistClick = {
-                    // Handle wishlist/favorites click
-                },
-                notificationCount = notificationCount
-            )
-        },*/
+        modifier = Modifier.safeDrawingPadding(),
+
+        /* topBar = {
+             MainAppBar(
+                 onSearchClick = {
+                     // Handle search click (no longer needed with integrated search)
+                 },
+                 onNotificationClick = {
+                     // Handle notification click
+                 },
+                 onWishlistClick = {
+                     // Handle wishlist/favorites click
+                 },
+                 notificationCount = notificationCount
+             )
+         },*/
         bottomBar = {
             MainBottomNavigationBar(
                 items = navigationItems,
