@@ -11,7 +11,8 @@ import androidx.navigation.compose.rememberNavController
 
 import coil3.ImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
-import coil3.fetch.NetworkFetcher
+import coil3.network.NetworkFetcher
+import coil3.request.crossfade
 import com.aliexpressshoppingbd.ali2bd.di.appModule
 import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
 import com.aliexpressshoppingbd.ali2bd.navigation.AppNavigation
@@ -30,9 +31,7 @@ fun App() {
     }) {
         setSingletonImageLoaderFactory { context ->
             ImageLoader.Builder(context)
-                .components {
-                    add(NetworkFetcher.Factory())
-                }
+                .crossfade(true)
                 .build()
         }
 

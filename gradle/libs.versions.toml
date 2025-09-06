@@ -10,7 +10,7 @@ androidx-espresso = "3.7.0"
 androidx-lifecycle = "2.9.3"
 androidx-testExt = "1.3.0"
 compose-navigation-ver = "2.8.0-alpha11"
-coil3-io = "3.0.0-alpha01"
+coil3-io = "3.3.0"
 composeMultiplatform = "1.8.2"
 junit = "4.13.2"
 kotlin = "2.2.10"
@@ -19,7 +19,7 @@ ktor = "3.0.1"
 
 [libraries]
 coil3 = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3-io" }
-coil3-network = { module = "io.coil-kt.coil3:coil-network", version.ref = "coil3-io" }
+coil3-network = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3-io" }
 compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "compose-navigation-ver" }
 coil3-video = { module = "io.coil-kt.coil3:coil-video", version.ref = "coil3-io" }
 coil3-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil3-io" }
