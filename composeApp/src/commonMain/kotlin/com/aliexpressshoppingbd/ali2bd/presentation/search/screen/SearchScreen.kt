@@ -55,7 +55,6 @@ import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
-import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.ConfigObject
 import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.SystemConfigItem
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.components.SearchBar
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.components.SearchHistoryItem
@@ -121,13 +120,13 @@ fun SearchScreen(
             }
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            // Search History Section
-            if (uiState.recentSearches.isNotEmpty()) {
+        if (!uiState.isLoading) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+
                 item {
                     Row(
                         modifier = Modifier
@@ -153,12 +152,7 @@ fun SearchScreen(
                         }
                     }
                 }
-            }
 
-            // Search History Items or Empty State
-            if (uiState.recentSearches.isEmpty()) {
-
-            } else {
                 items(uiState.recentSearches) { search ->
                     SearchHistoryItem(
                         search = search,
@@ -167,103 +161,177 @@ fun SearchScreen(
                     )
                     Divider(modifier = Modifier.padding(horizontal = 16.dp))
                 }
-            }
 
-            if (uiState.recentSearches.isNotEmpty()) {
+
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "Visit the site directly to shop items",
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 16.sp
-                        )
-
+                    Column {
                         Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.clickable { /* Handle tutorial click */ }
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text = "Watch Tutorial",
-                                color = Color(0xFFFF5722),
-                                fontSize = 14.sp
+                                text = "Visit the site directly to shop items",
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 16.sp
                             )
 
-                            // Tutorial video icon placeholder
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .padding(start = 4.dp)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.clickable { /* Handle tutorial click */ }
                             ) {
                                 Text(
-                                    text = "▶",
+                                    text = "Watch Tutorial",
                                     color = Color(0xFFFF5722),
                                     fontSize = 14.sp
                                 )
+
+                                // Tutorial video icon placeholder
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .padding(start = 4.dp)
+                                ) {
+                                    Text(
+                                        text = "▶",
+                                        color = Color(0xFFFF5722),
+                                        fontSize = 14.sp
+                                    )
+                                }
+                            }
+                        }
+                        // Shopping Platforms Grid
+
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(4),
+                            contentPadding = PaddingValues(8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(220.dp) // Adjust height to fit 2 rows of items
+                        ) {
+                            items(uiState.storeList) { platform ->
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .clickable {
+
+                                        }
+                                ) {
+                                    // Placeholder image for platforms
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth().fillMaxHeight(.8f)
+                                            .clip(MaterialTheme.shapes.small)
+                                    ) {
+                                        AsyncImage(
+                                            platform.imageRes,
+                                            null,
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Crop,
+                                            /*   error = painterResource(Res.drawable.default_image_loader),
+                                               placeholder = painterResource(Res.drawable.default_image_loader),*/
+
+                                        )
+
+                                    }
+
+                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                    platform.title?.let {
+                                        Text(
+                                            text = it,
+                                            fontSize = 12.sp,
+                                            textAlign = TextAlign.Center,
+                                            maxLines = 1
+                                        )
+                                    }
+                                }
+
                             }
                         }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-            }
 
-            // Shopping Platforms Grid
-            item {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(4),
-                    contentPadding = PaddingValues(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(220.dp) // Adjust height to fit 2 rows of items
-                ) {
-                    items(uiState.countrySelection) { platform ->
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Column {
+                        Row(
                             modifier = Modifier
-                                .padding(8.dp)
-                                .clickable {
-
-                                }
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            // Placeholder image for platforms
-                            Box(
-                                modifier = Modifier.fillMaxWidth().fillMaxHeight(.8f)
-                                    .clip(MaterialTheme.shapes.small)
-                            ) {
-                                AsyncImage(
-                                    platform.image,
-                                    null,
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentScale = ContentScale.Crop,
-                                    error = painterResource(Res.drawable.default_image_loader),
-                                    placeholder = painterResource(Res.drawable.default_image_loader),
+                            Text(
+                                text = "Start Shipping From These Countries",
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 16.sp
+                            )
 
-                                )
+                        }
+                        // Shopping Platforms Grid
 
-                            }
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(4),
+                            contentPadding = PaddingValues(8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(220.dp) // Adjust height to fit 2 rows of items
+                        ) {
+                            items(uiState.countrySelection) { platform ->
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .clickable {
 
-                            Spacer(modifier = Modifier.height(4.dp))
+                                        }
+                                ) {
+                                    // Placeholder image for platforms
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth().fillMaxHeight(.8f)
+                                            .clip(MaterialTheme.shapes.small)
+                                    ) {
+                                        AsyncImage(
+                                            platform.image,
+                                            null,
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Crop,
+                                            /*   error = painterResource(Res.drawable.default_image_loader),
+                                               placeholder = painterResource(Res.drawable.default_image_loader),*/
 
-                            platform.label?.let {
-                                Text(
-                                    text = it,
-                                    fontSize = 12.sp,
-                                    textAlign = TextAlign.Center,
-                                    maxLines = 1
-                                )
+                                        )
+
+                                    }
+
+                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                    platform.label?.let {
+                                        Text(
+                                            text = it,
+                                            fontSize = 12.sp,
+                                            textAlign = TextAlign.Center,
+                                            maxLines = 1
+                                        )
+                                    }
+                                }
+
                             }
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
+
+
             }
         }
 

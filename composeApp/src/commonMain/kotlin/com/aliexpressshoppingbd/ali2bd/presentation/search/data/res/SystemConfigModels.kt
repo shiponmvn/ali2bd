@@ -43,12 +43,3 @@ data class ValueData(
     @SerialName("fileId") val fileId: String? = null
 )
 
-// Helper classes for parsing specific config item types
-@Serializable
-data class ConfigObject(
-    @SerialName("key") val key: String? = null,
-    @SerialName("label") val label: String? = null,
-    @SerialName("image") val image: String? = null,
-    @SerialName("fileId") val fileId: String? = null,
-    @SerialName("link") val link: String? = null
-)

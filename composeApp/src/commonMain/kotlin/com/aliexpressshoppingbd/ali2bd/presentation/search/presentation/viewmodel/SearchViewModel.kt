@@ -3,6 +3,7 @@ package com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmod
 import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.SystemConfigItem
 import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.ValueData
 import com.aliexpressshoppingbd.ali2bd.common.extentions.getValueAsList
+import com.aliexpressshoppingbd.ali2bd.presentation.search.domain.model.SearchCustomModel
 import com.aliexpressshoppingbd.ali2bd.presentation.search.domain.usecase.system_config.SystemConfigUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,25 +20,8 @@ class SearchViewModel(
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
-    private val defaultSearchSuggestions = listOf(
-        "Smartphone",
-        "Laptop",
-        "Men's Clothing",
-        "Women's Shoes",
-        "Smart Watch",
-        "Bluetooth Earbuds"
-    )
-
-    private val defaultRecentSearches = listOf(
-        "Headphones",
-        "iPhone case",
-        "Gaming mouse",
-        "Keyboard"
-    )
-
     init {
-        // Initialize with default values until API data is loaded
-
+        loadStoreList()
     }
 
     fun loadSystemConfig() {
@@ -47,14 +31,14 @@ class SearchViewModel(
             try {
                 systemConfigUseCase.invoke().collect { result ->
                     result.onSuccess { response ->
-                        val popularSearches = extractCountriesSection(response.data)
+                        val countries = extractCountriesSection(response.data)
                         _uiState.update { currentState ->
                             currentState.copy(
-                                recentSearches = defaultRecentSearches,
-                                searchSuggestions = defaultSearchSuggestions,
-                                popularSearches = defaultSearchSuggestions,
+                                recentSearches = emptyList(),
+                                searchSuggestions = emptyList(),
+                                popularSearches = emptyList(),
                                 isLoading = false,
-                                countrySelection = popularSearches,
+                                countrySelection = countries,
                             )
                         }
                     }.onFailure { error ->
@@ -74,6 +58,13 @@ class SearchViewModel(
                     )
                 }
             }
+        }
+    }
+
+    fun loadStoreList() {
+        val storeList = SearchCustomModel.getStoreList()
+        _uiState.update { currentState ->
+            currentState.copy(storeList = storeList)
         }
     }
 
@@ -119,5 +110,6 @@ data class SearchUiState(
     val recentSearches: List<String> = emptyList(),
     val popularSearches: List<String> = emptyList(),
     val searchSuggestions: List<String> = emptyList(),
-    val countrySelection : List<ValueData> = emptyList()
+    val countrySelection: List<ValueData> = emptyList(),
+    val storeList: List<SearchCustomModel> = emptyList()
 )
