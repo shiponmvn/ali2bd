@@ -18,16 +18,11 @@ class ProductListApiServiceImpl(
     override suspend fun searchProducts(keyword: String): ProductListResponse {
 
         try {
-            val response: HttpResponse = httpClient.get("https://edge.ali2bd.com/api/public/v1/products/search") {
+            return httpClient.get("https://edge.ali2bd.com/api/public/v1/products/search") {
                 parameter("keyword", keyword)
-            }
-            val rawBody = response.bodyAsText()
-            val configResponse: ProductListResponse = Json.decodeFromString(rawBody)
-            return configResponse
-
+            }.body()
         } catch (e: Exception) {
-            throw  e;
-
+            throw e
         }
     }
 }
