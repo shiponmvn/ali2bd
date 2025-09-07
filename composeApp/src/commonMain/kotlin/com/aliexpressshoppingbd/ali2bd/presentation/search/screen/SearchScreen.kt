@@ -212,7 +212,7 @@ fun SearchScreen(
                             contentPadding = PaddingValues(8.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(220.dp) // Adjust height to fit 2 rows of items
+                                .height(260.dp) // Adjust height to fit 2 rows of items
                         ) {
                             items(uiState.storeList) { platform ->
                                 Column(
