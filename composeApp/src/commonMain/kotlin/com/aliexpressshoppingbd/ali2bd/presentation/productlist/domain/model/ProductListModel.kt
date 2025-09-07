@@ -1,0 +1,30 @@
+package com.aliexpressshoppingbd.ali2bd.presentation.productlist.domain.model
+
+data class ProductListModel(
+    val id: String? = null,
+    val vpid: Long,
+    val vendor: String,
+    val title: String,
+    val link: String,
+    val image: String,
+    val thumbnail: String,
+    val sold: Int,
+    val stock: Int? = null,
+    val rating: String,
+    val ratingCount: Int? = null,
+    val status: String? = null,
+    val countdown: String? = null,
+    val badge: String? = null,
+    val minPrice: String,
+    val maxPrice: String,
+    val discountMinPrice: String? = null,
+    val discountMaxPrice: String? = null,
+    val shippingCost: String? = null,
+    val slug: String,
+    val productCode: String,
+    val countryId: Int,
+    val shopId: Int,
+    val fx: String,
+    val deliveryChargePercent: Int,
+    val deliveryChargeType: String
+)

@@ -17,6 +17,8 @@ import com.aliexpressshoppingbd.ali2bd.di.appModule
 import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
 import com.aliexpressshoppingbd.ali2bd.navigation.AppNavigation
 import com.aliexpressshoppingbd.ali2bd.presentation.main.screen.MainNav
+import com.aliexpressshoppingbd.ali2bd.presentation.productlist.presentation.viewmodel.ProductListViewModel
+import com.aliexpressshoppingbd.ali2bd.presentation.productlist.screen.ProductListScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.splash.SplashNav
@@ -54,7 +56,7 @@ fun App() {
                     }
                     composable<AppNavigation.Main> {
                         MainNav(navigateToSearch = {
-                            navigator.navigate(AppNavigation.Search)
+                            navigator.navigate(AppNavigation.ProductList)
 
                         })
                     }
@@ -70,6 +72,21 @@ fun App() {
                                 // You might want to navigate to results or perform search
                                 println("Search for: $query")
                             }
+                        )
+                    }
+
+                    composable<AppNavigation.ProductList> {
+                        val productListViewModel: ProductListViewModel = koinInject()
+                        ProductListScreen(
+                            keyword = "Bags",
+                            viewModel = productListViewModel,
+                            onNavigateBack = {
+                                navigator.popBackStack()
+                            },
+                            onProductClick = {
+
+                            }
+
                         )
                     }
                 }
