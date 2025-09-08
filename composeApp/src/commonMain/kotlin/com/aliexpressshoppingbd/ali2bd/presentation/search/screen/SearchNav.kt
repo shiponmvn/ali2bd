@@ -65,7 +65,9 @@ fun SearchNav(
 
 
             ProductListNav(
-                onNavigateBack = onNavigateBack,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
                 keyword = argument.keyword
             )
         }
