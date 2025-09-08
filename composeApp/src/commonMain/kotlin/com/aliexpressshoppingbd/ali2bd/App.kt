@@ -20,6 +20,7 @@ import com.aliexpressshoppingbd.ali2bd.presentation.main.screen.MainNav
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.presentation.viewmodel.ProductListViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.screen.ProductListScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
+import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchNav
 import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.splash.SplashNav
 import org.koin.compose.KoinApplication
@@ -49,46 +50,27 @@ fun App() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     composable<AppNavigation.Splash> {
-                        SplashNav (navigateToMain = {
+                        SplashNav(navigateToMain = {
                             navigator.popBackStack()
                             navigator.navigate(AppNavigation.Main)
                         })
                     }
                     composable<AppNavigation.Main> {
                         MainNav(navigateToSearch = {
-                            navigator.navigate(AppNavigation.ProductList)
+                            navigator.navigate(AppNavigation.Search)
 
                         })
                     }
                     composable<AppNavigation.Search> {
-                        val searchViewModel: SearchViewModel = koinInject()
-                        SearchScreen(
-                            viewModel = searchViewModel,
-                            onNavigateBack = {
+                        SearchNav(
+                             onNavigateBack = {
                                 navigator.popBackStack()
-                            },
-                            onSearchItemClick = { query ->
-                                // Handle search item click
-                                // You might want to navigate to results or perform search
-                                println("Search for: $query")
-                            }
-                        )
-                    }
-
-                    composable<AppNavigation.ProductList> {
-                        val productListViewModel: ProductListViewModel = koinInject()
-                        ProductListScreen(
-                            keyword = "Bags",
-                            viewModel = productListViewModel,
-                            onNavigateBack = {
-                                navigator.popBackStack()
-                            },
-                            onProductClick = {
-
                             }
 
                         )
                     }
+
+
                 }
             }
 

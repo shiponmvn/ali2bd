@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 sealed interface HomeNavigation {
 
     @Serializable
-    data class Search(val categoryId: Long?, val sort: Int?) : HomeNavigation
+    data object Search : HomeNavigation
 
 }
 
