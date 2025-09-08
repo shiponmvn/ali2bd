@@ -43,6 +43,8 @@ fun SearchNav(
     onNavigateBack: () -> Unit,
 ) {
     val navController = rememberNavController()
+    // Inject the SearchViewModel at the NavHost level to preserve state
+    val searchViewModel: SearchViewModel = koinInject()
 
     NavHost(
         navController = navController,
@@ -51,7 +53,6 @@ fun SearchNav(
             .fillMaxSize()
     ) {
         composable<SearchNavigation.Search> {
-            val searchViewModel: SearchViewModel = koinInject()
             SearchScreen(
                 viewModel = searchViewModel,
                 onNavigateBack = onNavigateBack,

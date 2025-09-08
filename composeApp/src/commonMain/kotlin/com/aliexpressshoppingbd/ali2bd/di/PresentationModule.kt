@@ -5,7 +5,6 @@ import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmode
 import org.koin.dsl.module
 
 val presentationModule = module {
-    factory { SearchViewModel(get()) }
+    single { SearchViewModel(get()) }
     factory { ProductListViewModel(get()) }
 }
-

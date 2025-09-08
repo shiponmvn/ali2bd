@@ -25,6 +25,11 @@ class SearchViewModel(
     }
 
     fun loadSystemConfig() {
+        // Only load if we don't already have data or if we're not currently loading
+        if (_uiState.value.countrySelection.isNotEmpty() || _uiState.value.isLoading) {
+            return
+        }
+
         _uiState.update { it.copy(isLoading = true, error = null) }
 
         coroutineScope.launch {
