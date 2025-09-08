@@ -1,11 +1,13 @@
 package com.aliexpressshoppingbd.ali2bd.presentation.productlist.presentation.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,7 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.data.res.ProductItem
-import com.aliexpressshoppingbd.ali2bd.presentation.productlist.domain.model.ProductListModel
+import com.aliexpressshoppingbd.ali2bd.core.utils.ImageOptimizer
+import com.aliexpressshoppingbd.ali2bd.core.utils.ImageSize
 
 @Composable
 fun ProductListGrid(
@@ -24,18 +27,24 @@ fun ProductListGrid(
     onProductClick: (ProductItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(16.dp)
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp)
     ) {
-        items(products) { product ->
+        items(
+            items = products,
+            key = { product -> product.vpid } // Replace 'id' with your actual unique identifier
+        ) { product ->
             ProductListItem(
                 product = product,
-                onClick = { onProductClick(product) }
+                onClick = { onProductClick(product) },
+                modifier = Modifier.padding(4.dp)
             )
         }
     }
+
 }
 
 @Composable
@@ -47,40 +56,48 @@ fun ProductListItem(
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(8.dp)
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        Column(
+            modifier = Modifier.fillMaxWidth()
         ) {
+            // Product Image with optimization
             AsyncImage(
-                model = product.thumbnail,
+                model = "https://cbu01.alicdn.com/img/ibank/O1CN012MdrTe1VgrambE5hT_!!2215662602683-0-cib.jpg_100x100Q80.jpg",
                 contentDescription = product.title,
                 modifier = Modifier
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)),
                 contentScale = ContentScale.Crop
             )
 
+            // Product Details
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
+                // Product Title
                 Text(
                     text = product.title,
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    lineHeight = 14.sp
                 )
 
+                // Price
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "৳${product.price.min}",
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -88,34 +105,30 @@ fun ProductListItem(
                     if (product.price.min != product.price.max) {
                         Text(
                             text = "- ৳${product.price.max}",
-                            fontSize = 14.sp,
+                            fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
 
+                // Rating and Sales
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "⭐ ${product.rating}",
-                        fontSize = 12.sp,
+                        fontSize = 10.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     Text(
                         text = "${product.sold} sold",
-                        fontSize = 12.sp,
+                        fontSize = 10.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-
-                Text(
-                    text = product.vendor,
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.secondary
-                )
             }
         }
     }
