@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.aliexpressshoppingbd.ali2bd.core.utils.ImageOptimizer
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.data.res.ProductItem
 
 @Composable
@@ -64,7 +65,7 @@ fun ProductListItem(
         ) {
             // Product Image with optimization
             AsyncImage(
-                model = product.image,
+                model = ImageOptimizer.getOptimizedUrl(product.image),
                 contentDescription = product.title,
                 modifier = Modifier
                     .fillMaxWidth()
