@@ -1,5 +1,6 @@
 package com.aliexpressshoppingbd.ali2bd.presentation.productlist.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -7,7 +8,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,8 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.data.res.ProductItem
-import com.aliexpressshoppingbd.ali2bd.core.utils.ImageOptimizer
-import com.aliexpressshoppingbd.ali2bd.core.utils.ImageSize
 
 @Composable
 fun ProductListGrid(
@@ -29,22 +28,23 @@ fun ProductListGrid(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp)
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
             items = products,
-            key = { product -> product.vpid } // Replace 'id' with your actual unique identifier
+            key = { product -> product.vpid },
+            contentType = { "product_item" }
         ) { product ->
+            val onClick = remember(product.vpid) { { onProductClick(product) } }
             ProductListItem(
                 product = product,
-                onClick = { onProductClick(product) },
-                modifier = Modifier.padding(4.dp)
+                onClick = onClick
             )
         }
     }
-
 }
 
 @Composable
@@ -53,18 +53,18 @@ fun ProductListItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(8.dp)
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .clickable { onClick() }
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
             // Product Image with optimization
             AsyncImage(
-                model = "https://cbu01.alicdn.com/img/ibank/O1CN012MdrTe1VgrambE5hT_!!2215662602683-0-cib.jpg_100x100Q80.jpg",
+                model = product.image,
                 contentDescription = product.title,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -91,25 +91,22 @@ fun ProductListItem(
                 )
 
                 // Price
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "৳${product.price.min}",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-
+                val priceText = remember(product.price.min, product.price.max) {
                     if (product.price.min != product.price.max) {
-                        Text(
-                            text = "- ৳${product.price.max}",
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        "৳${product.price.min} - ৳${product.price.max}"
+                    } else {
+                        "৳${product.price.min}"
                     }
                 }
+
+                Text(
+                    text = priceText,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
 
                 // Rating and Sales
                 Row(
