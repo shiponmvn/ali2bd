@@ -125,11 +125,11 @@ fun MainNav(
                 )
             }
 
-            composable(route = MainNavigationDestinations.Category.toString()) {
+            composable< MainNavigationDestinations.Category> {
                 CategoryScreen()
             }
 
-            composable(route = MainNavigationDestinations.Cart.toString()) {
+            composable< MainNavigationDestinations.Cart> {
                 val cartViewModel: CartViewModel = koinInject()
                 CartScreen(
                     viewModel = cartViewModel,
@@ -142,7 +142,7 @@ fun MainNav(
                 )
             }
 
-            composable(route = MainNavigationDestinations.Account.toString()) {
+            composable<MainNavigationDestinations.Account> {
                 AccountScreen()
             }
 
