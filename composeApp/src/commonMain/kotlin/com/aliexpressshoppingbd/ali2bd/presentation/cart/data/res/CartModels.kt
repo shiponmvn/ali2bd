@@ -26,7 +26,6 @@ data class CartItem(
     @SerialName("quantity") val quantity: Int = 0,
     @SerialName("price") val price: Double = 0.0,
     @SerialName("attrs") val attrs: String? = null,
-    @SerialName("extras") val extras: Extras = Extras(),
     @SerialName("skuid") val skuId: String? = null,
     @SerialName("freight") val freight: String = "",
     @SerialName("freight_std_fee") val freightStdFee: String = "",
@@ -48,10 +47,7 @@ data class CartItem(
     @SerialName("approval_type") val approvalType: String? = null
 )
 
-@Serializable
-data class Extras(
-    @SerialName("weight") val weight: Weight = Weight()
-)
+
 
 @Serializable
 data class Weight(
@@ -68,7 +64,7 @@ data class Shipping(
     @SerialName("unit") val unit: String = "",
     @SerialName("price") val price: String = "",
     @SerialName("slots") val slots: List<Slot> = emptyList(),
-    @SerialName("category") val category: ShippingCategory = ShippingCategory()
+    @SerialName("category") val category: ShippingCategory? = null,
 )
 
 @Serializable

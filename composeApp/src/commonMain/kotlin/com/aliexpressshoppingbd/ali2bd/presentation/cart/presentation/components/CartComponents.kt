@@ -2,6 +2,8 @@ package com.aliexpressshoppingbd.ali2bd.presentation.cart.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.aliexpressshoppingbd.ali2bd.presentation.cart.data.res.CartItem
 
 
@@ -111,8 +115,41 @@ fun CartContentComponent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(16.dp)
+                .shadow(4.dp, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
         ) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Total",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = "BDT ${cart.sumOf { it.price }.toInt()}",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
 
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = onCheckout,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Text("Checkout")
+                }
+            }
         }
     }
 }
@@ -123,33 +160,54 @@ fun CartItemComponent(
     onQuantityChange: (String, Int) -> Unit,
     onRemoveItem: (String) -> Unit
 ) {
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            .padding(8.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
         ) {
-            // Shop name
-            Text(
-                text = cartItem.title,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold
-            )
+            // Shop info
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = cartItem.shop.name.ifEmpty { "ALI2BD" },
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Main product info
+            // Product info
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
+                // Product image
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color.LightGray)
+                ) {
+                    // Replace with actual image loading when available
+                    AsyncImage(
+                        cartItem.image,
+                        null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop,
 
 
+                        )
+                }
 
                 Spacer(modifier = Modifier.width(12.dp))
 
@@ -168,57 +226,123 @@ fun CartItemComponent(
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
-
-                    // Product code
+                    // Shipping info
                     Text(
-                        text = "Product Code: ${cartItem.productCode}",
+                        text = if (cartItem.freight == "mvn_ship_for_me") "MoveOn - Ship for me: ${cartItem.shipping.price}/-${cartItem.shipping.unit}" else "Standard Shipping: ${cartItem.shipping.price}/-${cartItem.shipping.unit}",
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
 
-                    // Price
+                    Spacer(modifier = Modifier.height(4.dp))
+
                     Text(
-                        text = "৳${cartItem.price}",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
+                        text = "Domestic Delivery Charge: BDT ${cartItem.domesticDeliveryCharge}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Actions row
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
-                // Remove button
-                Button(
-                    onClick = { onRemoveItem(cartItem.id.toString()) },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Red.copy(alpha = 0.8f)
-                    ),
-                    modifier = Modifier.padding(end = 8.dp)
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Remove Item"
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Remove")
+                    cartItem.metaItems.forEachIndexed { index, metaItem ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            // Color and size info
+                            Column {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    val attrValues =
+                                        cartItem.metaItems[index].attrs.map { "${it.key}: ${it.value}" }
+                                    val joinedValues = attrValues.joinToString(separator = ", ")
+
+
+                                    Text(
+                                        text = joinedValues,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Color.DarkGray,
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
+
+                                Text(
+                                    text = "BDT ${(cartItem.metaItems[index].price)}",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color.Black,
+                                    fontWeight = FontWeight.Normal
+                                )
+                            }
+
+
+                            // Quantity controls and price
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                IconButton(
+                                    onClick = {
+                                        if (cartItem.quantity > 1) {
+                                            onQuantityChange(
+                                                cartItem.id.toString(),
+                                                cartItem.quantity - 1
+                                            )
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .size(28.dp)
+                                        .border(1.dp, Color.LightGray, RoundedCornerShape(4.dp))
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Remove,
+                                        contentDescription = "Decrease",
+                                        tint = Color.Gray,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                }
+
+                                Text(
+                                    text = "${cartItem.metaItems[index].quantity}",
+                                    modifier = Modifier.padding(horizontal = 12.dp),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+
+                                IconButton(
+                                    onClick = {
+                                        onQuantityChange(
+                                            cartItem.id.toString(),
+                                            cartItem.quantity + 1
+                                        )
+                                    },
+                                    modifier = Modifier
+                                        .size(28.dp)
+                                        .border(1.dp, Color.LightGray, RoundedCornerShape(4.dp))
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = "Increase",
+                                        tint = Color.Gray,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                }
+
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 }
-
-
-
