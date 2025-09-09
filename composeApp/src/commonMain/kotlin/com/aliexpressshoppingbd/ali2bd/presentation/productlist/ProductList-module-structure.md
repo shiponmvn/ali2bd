@@ -1,29 +1,40 @@
 # ProductList Module Structure
 
-Detailed structure of the ProductList feature:
+The ProductList feature follows a clean architecture pattern with the following structure:
 
 ```
 productlist/
-├── data/                        # Data layer components
-│   ├── api_service/             # API communication
-│   │   ├── ProductListApiService.kt
-│   │   └── ProductListApiServiceImpl.kt
-│   ├── req/                     # Request models
-│   └── res/                     # Response models
-│       └── ProductModels.kt
-├── domain/                      # Domain layer
-│   ├── model/                   # Domain models
-│   │   └── ProductListModel.kt
-│   ├── repository/              # Repository interfaces
-│   │   └── ProductListRepository.kt
-│   └── usecase/                 # Use cases
+├── data/                                   # Data Layer
+│   ├── api_service/                        # API Communication Services
+│   │   ├── ProductListApiService.kt        # API Service Interface
+│   │   └── ProductListApiServiceImpl.kt    # API Service Implementation
+│   ├── req/                                # Request Models (API request DTOs)
+│   │   └── ProductRequestModels.kt         # Request model definitions
+│   └── res/                                # Response Models
+│       └── ProductModels.kt                # DTO Models for API responses
+│
+├── domain/                                 # Domain Layer (Business Logic)
+│   ├── model/                              # Domain Models
+│   │   └── ProductListModel.kt             # Core product business models
+│   └── usecase/                            # Use Cases (Business Operations)
 │       └── product/
-│           └── ProductListUseCase.kt
-├── presentation/                # UI components
-│   ├── components/              # Reusable UI components
-│   │   └── ProductListComponents.kt
-│   └── viewmodel/               # ViewModels
-│       └── ProductListViewModel.kt
-└── screen/                      # Screen composables
-    └── ProductListScreen.kt     # Main product list screen UI
+│           └── ProductListUseCase.kt       # Product listing business logic
+│
+├── navigation/                             # Navigation Components
+│   └── ProductListNavigation.kt            # Navigation routing for product list
+│
+├── presentation/                           # Presentation Layer
+│   ├── components/                         # Reusable UI Components
+│   │   └── ProductListComponents.kt        # Product-specific UI components
+│   └── viewmodel/                          # ViewModels
+│       └── ProductListViewModel.kt         # State management for product listing
+│
+└── screen/                                 # Screen Definitions
+    ├── ProductListScreen.kt                # Main product list screen UI
+    └── ProductListNav.kt                   # Navigation handling for product list
 ```
+
+## Current Status Notes
+
+- The repository pattern described in the original architecture plan has not been implemented yet.
+- Repository would typically be located at `domain/repository/ProductListRepository.kt` when implemented.
