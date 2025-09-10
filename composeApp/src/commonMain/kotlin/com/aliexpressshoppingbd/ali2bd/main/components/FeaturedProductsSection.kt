@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -58,7 +60,7 @@ fun FeaturedProductsSection(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxWidth()  // Changed from fillMaxSize to fillMaxWidth
             .padding(vertical = 8.dp)
 
     ) {
@@ -98,10 +100,13 @@ fun FeaturedProductsSection(
                 )
             }
         }
+        Spacer(modifier = Modifier.height(8.dp))
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
-            modifier = modifier.fillMaxWidth().weight(0.1f),
+            userScrollEnabled = false,
+            modifier = Modifier  // Using a new Modifier instance, not reusing the parent modifier
+                .fillMaxWidth().height(400.dp),
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -113,7 +118,8 @@ fun FeaturedProductsSection(
                 key = { product -> product.vpid },
                 contentType = { "product_item" }
             ) { product ->
-                val onClick = remember(product.vpid) { { } }
+                val onClick = remember(product.vpid) { {  } }
+
                 ProductListItem(
                     product = product,
                     onClick = onClick
@@ -124,5 +130,3 @@ fun FeaturedProductsSection(
 
     }
 }
-
-
