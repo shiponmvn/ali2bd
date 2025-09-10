@@ -112,43 +112,42 @@ fun CartContentComponent(
 
         // Fixed summary at bottom
         Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
-                .padding(16.dp)
-                .shadow(4.dp, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface).padding(8.dp)
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().align(Alignment.Center)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+
                 ) {
-                    Text(
-                        text = "Total",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        text = "BDT ${cart.sumOf { it.price }.toInt()}",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Total: ", style = MaterialTheme.typography.titleMedium
+                        )
+
+                        Text(
+                            text = "${cart.sumOf { it.price }.toInt()} BDT",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Button(
+                        onClick = onCheckout, colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Text("Checkout")
+                    }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
 
-                Button(
-                    onClick = onCheckout,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
-                ) {
-                    Text("Checkout")
-                }
             }
         }
     }
