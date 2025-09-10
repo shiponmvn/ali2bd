@@ -37,18 +37,21 @@ class HomeViewModel(
     val uiCategoryState: StateFlow<CategoriesUiState> = _uiCategoryState.asStateFlow()
     val uiPromoBannerState: StateFlow<BannerUiState> = _uiPromoBannerState.asStateFlow()
 
-    val uiProductSectionUiState: StateFlow<ProductSectionUiState> = _uiProductSectionUiState.asStateFlow()
+    val uiProductSectionUiState: StateFlow<ProductSectionUiState> =
+        _uiProductSectionUiState.asStateFlow()
 
     init {
         loadCategoryList()
         loadPromoBannerList()
-        searchProducts("Bags");
+        searchProducts1("Toys, Kids & Babies");
+        searchProducts2("Home/Kitchen Accessories");
+        searchProducts3("Fashion & Jewelry");
+        searchProducts4("Bags");
     }
 
 
-    fun searchProducts(keyword: String) {
+    fun searchProducts1(keyword: String) {
         coroutineScope.launch {
-
             productListUseCase.searchProducts(keyword).collect { result ->
                 result.onSuccess { products ->
                     _uiProductSectionUiState.value = _uiProductSectionUiState.value.copy(
@@ -64,8 +67,56 @@ class HomeViewModel(
         }
     }
 
+    fun searchProducts2(keyword: String) {
+        coroutineScope.launch {
+            productListUseCase.searchProducts(keyword).collect { result ->
+                result.onSuccess { products ->
+                    _uiProductSectionUiState.value = _uiProductSectionUiState.value.copy(
+                        section2 = HomeProductSectionModel(keyword, products.items),
+                    )
+                }.onFailure { exception ->
+                    _uiProductSectionUiState.value = _uiProductSectionUiState.value.copy(
+                        section2 = HomeProductSectionModel(keyword, emptyList()),
+                    )
+                }
 
+            }
+        }
+    }
 
+    fun searchProducts3(keyword: String) {
+        coroutineScope.launch {
+            productListUseCase.searchProducts(keyword).collect { result ->
+                result.onSuccess { products ->
+                    _uiProductSectionUiState.value = _uiProductSectionUiState.value.copy(
+                        section3 = HomeProductSectionModel(keyword, products.items),
+                    )
+                }.onFailure { exception ->
+                    _uiProductSectionUiState.value = _uiProductSectionUiState.value.copy(
+                        section3 = HomeProductSectionModel(keyword, emptyList()),
+                    )
+                }
+
+            }
+        }
+    }
+
+    fun searchProducts4(keyword: String) {
+        coroutineScope.launch {
+            productListUseCase.searchProducts(keyword).collect { result ->
+                result.onSuccess { products ->
+                    _uiProductSectionUiState.value = _uiProductSectionUiState.value.copy(
+                        section4 = HomeProductSectionModel(keyword, products.items),
+                    )
+                }.onFailure { exception ->
+                    _uiProductSectionUiState.value = _uiProductSectionUiState.value.copy(
+                        section4 = HomeProductSectionModel(keyword, emptyList()),
+                    )
+                }
+
+            }
+        }
+    }
 
 
     fun loadCategoryList() {
@@ -81,7 +132,6 @@ class HomeViewModel(
             currentState.copy(banners = bannerList)
         }
     }
-
 
 
     private fun filterSuggestions(query: String, suggestions: List<String>): List<String> {
@@ -123,6 +173,7 @@ data class CategoriesUiState(
 data class BannerUiState(
     val banners: List<PromoBanner> = emptyList(),
 )
+
 data class ProductSectionUiState(
     val section1: HomeProductSectionModel? = null,
     val section2: HomeProductSectionModel? = null,

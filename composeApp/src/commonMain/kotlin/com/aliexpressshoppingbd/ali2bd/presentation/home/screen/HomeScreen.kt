@@ -108,5 +108,51 @@ fun HomeScreen(
                 }
             )
         }
+
+        item {
+            FeaturedProductsSection(
+                productSectionModel = uiProductSectionUiState.section2,
+                onProductClick = { product ->
+                    // Navigate to product details
+                },
+                onWishlistClick = { product ->
+                    // Toggle wishlist
+                },
+                onViewAllClick = {
+                    // Navigate to all featured products
+                }
+            )
+        }
+
+        item {
+            FeaturedProductsSection(
+                productSectionModel = uiProductSectionUiState.section3,
+                onProductClick = { product ->
+                    // Navigate to product details
+                },
+                onWishlistClick = { product ->
+                    // Toggle wishlist
+                },
+                onViewAllClick = {
+                    // Navigate to all featured products
+                }
+            )
+        }
+
+        item {
+            FeaturedProductsSection(
+                productSectionModel = uiProductSectionUiState.section4,
+                onProductClick = { product ->
+                    // Navigate to product details
+                },
+                onWishlistClick = { product ->
+                    // Toggle wishlist
+                },
+                onViewAllClick = {
+                    // Navigate to all featured products
+                }
+            )
+        }
+
     }
 }
