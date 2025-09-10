@@ -153,6 +153,7 @@ fun CartContentComponent(
     }
 }
 
+@Suppress("SuspiciousIndentation")
 @Composable
 fun CartItemComponent(
     cartItem: CartItem,
