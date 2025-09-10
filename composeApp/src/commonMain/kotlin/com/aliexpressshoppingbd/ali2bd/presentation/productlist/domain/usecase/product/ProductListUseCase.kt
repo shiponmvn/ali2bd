@@ -2,9 +2,6 @@ package com.aliexpressshoppingbd.ali2bd.presentation.productlist.domain.usecase.
 
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.data.api_service.ProductListApiService
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.data.res.ProductListResponse
-import com.aliexpressshoppingbd.ali2bd.presentation.productlist.domain.model.ProductListModel
-import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.ErrorResponse
-import com.aliexpressshoppingbd.ali2bd.presentation.search.data.res.SystemConfigResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

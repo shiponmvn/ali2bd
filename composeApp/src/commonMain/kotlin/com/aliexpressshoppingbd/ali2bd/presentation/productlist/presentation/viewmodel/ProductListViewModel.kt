@@ -3,7 +3,6 @@ package com.aliexpressshoppingbd.ali2bd.presentation.productlist.presentation.vi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.data.res.ProductItem
-import com.aliexpressshoppingbd.ali2bd.presentation.productlist.domain.model.ProductListModel
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.domain.usecase.product.ProductListUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

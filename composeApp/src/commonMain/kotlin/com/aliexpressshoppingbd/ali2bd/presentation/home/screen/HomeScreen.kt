@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aliexpressshoppingbd.ali2bd.main.components.CategoriesSection
 import com.aliexpressshoppingbd.ali2bd.main.components.Category
 import com.aliexpressshoppingbd.ali2bd.main.components.FeaturedProductsSection
@@ -27,33 +28,21 @@ import com.aliexpressshoppingbd.ali2bd.main.components.PromoBanner
 import com.aliexpressshoppingbd.ali2bd.main.components.PromotionalBannerSection
 import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
 import androidx.navigation.NavHostController
+import com.aliexpressshoppingbd.ali2bd.presentation.home.presentation.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel,
     modifier: Modifier = Modifier,
     navController: NavHostController,
     navigateToSearch: () -> Unit
 ) {
     var cartItemCount by remember { mutableStateOf(3) }
+    val uiProductSectionUiState by viewModel.uiProductSectionUiState.collectAsStateWithLifecycle()
 
-    // Sample data
-    val categories = listOf(
-        Category("1", "Fashion", Icons.Default.ShoppingBag, Color(0xFF9C27B0)),
-        Category("2", "Beauty", Icons.Default.Face, Color(0xFFE91E63)),
-        Category("3", "Men's", Icons.Default.Person, Color(0xFF2196F3)),
-        Category("4", "Women's", Icons.Default.Woman, Color(0xFF4CAF50)),
-        Category("5", "Kids", Icons.Default.ChildCare, Color(0xFFFF9800))
-    )
 
-    val promoBanners = listOf(
-        PromoBanner("1", "Big Sale", "Up to 50% Discount")
-    )
 
-    val featuredProducts = listOf(
-        Product("1", "White Jumpsuit", "₹1,100", "₹2,500"),
-        Product("2", "Vitamin C Serum", "₹2,453", "₹4,000"),
-        Product("3", "Strip T-shirt", "₹1,700", null)
-    )
+
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -86,7 +75,7 @@ fun HomeScreen(
 
         item {
             CategoriesSection(
-                categories = categories,
+                categories = viewModel.uiCategoryState.value.categories,
                 onCategoryClick = { category ->
                     // Navigate to category page
                 },
@@ -98,7 +87,7 @@ fun HomeScreen(
 
         item {
             PromotionalBannerSection(
-                banners = promoBanners,
+                banners = viewModel.uiPromoBannerState.value.banners,
                 onBannerClick = { banner ->
                     // Navigate to sale page
                 }
@@ -107,7 +96,7 @@ fun HomeScreen(
 
         item {
             FeaturedProductsSection(
-                products = featuredProducts,
+                productSectionModel = uiProductSectionUiState.section1,
                 onProductClick = { product ->
                     // Navigate to product details
                 },

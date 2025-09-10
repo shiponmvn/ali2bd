@@ -5,12 +5,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -23,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aliexpressshoppingbd.ali2bd.main.components.ProductCard
+import com.aliexpressshoppingbd.ali2bd.presentation.home.domain.model.HomeProductSectionModel
+import com.aliexpressshoppingbd.ali2bd.presentation.productlist.presentation.components.ProductListItem
 
 data class Product(
     val id: String,
@@ -43,7 +50,7 @@ data class Product(
 
 @Composable
 fun FeaturedProductsSection(
-    products: List<Product>,
+    productSectionModel: HomeProductSectionModel?,
     onProductClick: (Product) -> Unit = {},
     onWishlistClick: (Product) -> Unit = {},
     onViewAllClick: () -> Unit = {},
@@ -51,8 +58,9 @@ fun FeaturedProductsSection(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(vertical = 8.dp)
+
     ) {
         // Section header
         Row(
@@ -63,11 +71,12 @@ fun FeaturedProductsSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Featured",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                fontSize = 20.sp
+                text = productSectionModel?.keyword ?: "Featured Products",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
             )
 
             Row(
@@ -90,129 +99,30 @@ fun FeaturedProductsSection(
             }
         }
 
-        // Products horizontal list
-        LazyRow(
-            modifier = Modifier.padding(top = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp)
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            modifier = modifier.fillMaxWidth().weight(0.1f),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(products) { product ->
-                ProductCard(
+            val products = productSectionModel?.products?.take(6) ?: emptyList()
+
+            items(
+                items = products,
+                key = { product -> product.vpid },
+                contentType = { "product_item" }
+            ) { product ->
+                val onClick = remember(product.vpid) { { } }
+                ProductListItem(
                     product = product,
-                    onProductClick = { onProductClick(product) },
-                    onWishlistClick = { onWishlistClick(product) }
+                    onClick = onClick
                 )
             }
         }
+
+
     }
 }
 
-@Composable
-private fun ProductCard(
-    product: Product,
-    onProductClick: () -> Unit,
-    onWishlistClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .width(140.dp)
-            .clickable { onProductClick() },
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(12.dp)
-        ) {
-            // Image with wishlist button
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .size(100.dp)
-                    .background(
-                        Color(0xFFF5F5F5),
-                        RoundedCornerShape(6.dp)
-                    )
-            ) {
-                // Placeholder for product image
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(100.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "📷",
-                        fontSize = 40.sp
-                    )
-                }
 
-                // Wishlist button
-                IconButton(
-                    onClick = onWishlistClick,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .size(32.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(28.dp)
-                            .background(
-                                Color.White.copy(alpha = 0.9f),
-                                RoundedCornerShape(14.dp)
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.FavoriteBorder,
-                            contentDescription = "Add to Wishlist",
-                            tint = Color(0xFF666666),
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                }
-            }
-
-            // Product details
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Text(
-                    text = product.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                    fontSize = 16.sp,
-                    maxLines = 2
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = product.currentPrice,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFFF6B35),
-                        fontSize = 18.sp
-                    )
-
-                    product.originalPrice?.let { originalPrice ->
-                        Text(
-                            text = originalPrice,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color(0xFF999999),
-                            fontSize = 12.sp,
-                            textDecoration = TextDecoration.LineThrough
-                        )
-                    }
-                }
-            }
-        }
-    }
-}

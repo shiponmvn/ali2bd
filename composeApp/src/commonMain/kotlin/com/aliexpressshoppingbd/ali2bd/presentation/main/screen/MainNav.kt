@@ -31,6 +31,7 @@ import com.aliexpressshoppingbd.ali2bd.main.screens.AccountScreen
 import com.aliexpressshoppingbd.ali2bd.main.screens.CategoryScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.cart.presentation.viewmodel.CartViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.cart.screen.CartScreen
+import com.aliexpressshoppingbd.ali2bd.presentation.home.presentation.viewmodel.HomeViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.home.screen.HomeScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.search.screen.SearchScreen
@@ -118,7 +119,11 @@ fun MainNav(
                 .padding(paddingValues)
         ) {
             composable<MainNavigationDestinations.Home> {
-                HomeScreen(navController = navController,
+                val homeViewModel: HomeViewModel = koinInject()
+
+                HomeScreen(
+                    viewModel = homeViewModel,
+                    navController = navController,
                     navigateToSearch = {
                        navigateToSearch()
                     }

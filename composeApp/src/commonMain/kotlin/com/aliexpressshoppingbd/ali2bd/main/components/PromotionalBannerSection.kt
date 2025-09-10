@@ -25,14 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 
 data class PromoBanner(
-    val id: String,
-    val title: String,
-    val subtitle: String,
     val imageUrl: String? = null
 )
 
@@ -115,42 +114,19 @@ private fun BannerCard(
                 ),
                 shape = RoundedCornerShape(12.dp)
             )
-            .padding(20.dp)
     ) {
         Column(
             modifier = Modifier.align(Alignment.CenterStart),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(
-                text = banner.title,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontSize = 24.sp
-            )
+            AsyncImage(
+                banner.imageUrl,
+                null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+                /*   error = painterResource(Res.drawable.default_image_loader),
+                   placeholder = painterResource(Res.drawable.default_image_loader),*/
 
-            Text(
-                text = banner.subtitle,
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.White,
-                fontSize = 16.sp
-            )
-        }
-
-        // Placeholder for model image - will be replaced with actual image
-        Box(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .size(80.dp)
-                .background(
-                    Color.White.copy(alpha = 0.2f),
-                    RoundedCornerShape(8.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "👜",
-                fontSize = 40.sp
             )
         }
     }
