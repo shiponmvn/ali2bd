@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 fun HomeSearchSection(
     onSearchClick: () -> Unit = {},
     onVoiceClick: () -> Unit = {},
-    onMenuClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -47,7 +46,7 @@ fun HomeSearchSection(
                     color = Color(0xFFF5F5F5),
                     shape = RoundedCornerShape(20.dp)
                 )
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp).clickable(onClick = onSearchClick),
             contentAlignment = Alignment.CenterStart
         ) {
             Row(
@@ -56,8 +55,6 @@ fun HomeSearchSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
-                    modifier = Modifier
-                        .clickable(onClick = onSearchClick),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -88,17 +85,5 @@ fun HomeSearchSection(
             }
         }
 
-        // Menu button
-        IconButton(
-            onClick = onMenuClick,
-            modifier = Modifier.size(48.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.MoreVert,
-                contentDescription = "More Options",
-                tint = Color.Black,
-                modifier = Modifier.size(24.dp)
-            )
-        }
     }
 }

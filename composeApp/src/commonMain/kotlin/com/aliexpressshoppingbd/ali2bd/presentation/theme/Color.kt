@@ -3,7 +3,7 @@ package presentation.theme
 import androidx.compose.ui.graphics.Color
 
 
-val PrimaryColor = Color(0xFFFF4747)
+val PrimaryColor = Color(0xFFFF26623)
 val PrimaryVariantColor = Color(0xFFCA3D49)
 val AccentColor = Color(0xFFC62F79)
 val BackgroundContent = Color(0xFFf6f6f6)

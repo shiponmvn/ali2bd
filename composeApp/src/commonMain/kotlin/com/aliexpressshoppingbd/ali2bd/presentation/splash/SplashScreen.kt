@@ -37,7 +37,7 @@ fun SplashScreen() {
                 color = Color.White
             )
             Text(
-                text = "AliExpress Shopping",
+                text = "Ali2BD: Smart shopping with BDT",
                 fontSize = 16.sp,
                 color = Color.White.copy(alpha = 0.8f)
             )

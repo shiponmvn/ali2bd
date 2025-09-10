@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -85,9 +86,11 @@ fun CategoriesSection(
 
         // Categories horizontal list
         LazyRow(
-            modifier = Modifier.padding(top = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            contentPadding = PaddingValues(horizontal = 0.dp) // no extra padding
         ) {
             items(categories) { category ->
                 CategoryItem(
@@ -96,6 +99,7 @@ fun CategoriesSection(
                 )
             }
         }
+
     }
 }
 
@@ -112,7 +116,7 @@ private fun CategoryItem(
     ) {
         Box(
             modifier = Modifier
-                .size(60.dp)
+                .size(50.dp)
                 .clip(CircleShape)
                 .background(category.backgroundColor),
             contentAlignment = Alignment.Center
