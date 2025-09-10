@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -60,9 +61,8 @@ fun FeaturedProductsSection(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()  // Changed from fillMaxSize to fillMaxWidth
+            .fillMaxWidth()
             .padding(vertical = 8.dp)
-
     ) {
         // Section header
         Row(
@@ -80,7 +80,6 @@ fun FeaturedProductsSection(
                     color = Color.Black
                 )
             )
-
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -92,41 +91,25 @@ fun FeaturedProductsSection(
                     color = Color(0xFF666666),
                     fontSize = 14.sp
                 )
-                Icon(
-                    imageVector = Icons.Default.ArrowForward,
-                    contentDescription = "View All Products",
-                    tint = Color(0xFF666666),
-                    modifier = Modifier.size(16.dp)
-                )
             }
         }
+
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            userScrollEnabled = false,
-            modifier = Modifier  // Using a new Modifier instance, not reusing the parent modifier
-                .fillMaxWidth().height(400.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+        // Horizontal scrolling products
+        val products = productSectionModel?.products?.take(5) ?: emptyList()
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.fillMaxWidth()
         ) {
-            val products = productSectionModel?.products?.take(6) ?: emptyList()
-
-            items(
-                items = products,
-                key = { product -> product.vpid },
-                contentType = { "product_item" }
-            ) { product ->
-                val onClick = remember(product.vpid) { {  } }
-
+            items(products, key = { it.vpid }) { product ->
                 ProductListItem(
                     product = product,
-                    onClick = onClick
+                    onClick = { },
+                    modifier = Modifier.width(160.dp) // Fixed width per item for better layout
                 )
             }
         }
-
-
     }
 }
