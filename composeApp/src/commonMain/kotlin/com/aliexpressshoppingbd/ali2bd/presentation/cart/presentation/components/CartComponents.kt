@@ -121,7 +121,7 @@ fun CartContentComponent(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically
 
                 ) {
                     Row(
@@ -259,6 +259,25 @@ fun CartItemComponent(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            var attrImage: String? = null
+
+                            for(attr in cartItem.metaItems[index].attrs){
+                                if(attr.image!=null && attr.image.isNotEmpty()) {
+                                    attrImage = attr.image
+                                }
+
+                            }
+                            if(attrImage!=null)
+                            AsyncImage(
+                                attrImage,
+                                null,
+                                modifier = Modifier.height(50.dp).width(50.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(Color.LightGray),
+                                contentScale = ContentScale.Crop,
+
+
+                                )
                             // Color and size info
                             Column {
                                 Row(
