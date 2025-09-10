@@ -30,6 +30,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.coil3.network)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -52,7 +53,7 @@ kotlin {
             implementation("media.kamel:kamel-image-default:1.0.7")
 
             implementation(libs.coil3)
-            implementation(libs.coil3.network)
+          //  implementation(libs.coil3.network)
             implementation(libs.compose.navigation)
 
             // Ktor dependencies from version catalog
