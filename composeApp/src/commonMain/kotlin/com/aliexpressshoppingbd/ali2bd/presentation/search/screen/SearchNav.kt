@@ -25,12 +25,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.aliexpressshoppingbd.ali2bd.main.components.MainBottomNavigationBar
-import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
-import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationItem
-import com.aliexpressshoppingbd.ali2bd.main.screens.AccountScreen
-import com.aliexpressshoppingbd.ali2bd.main.screens.CategoryScreen
-import com.aliexpressshoppingbd.ali2bd.presentation.home.screen.HomeScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.screen.ProductListNav
 import com.aliexpressshoppingbd.ali2bd.presentation.search.navigation.SearchNavigation
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel

@@ -4,6 +4,8 @@ import business.core.KtorHttpClient
 import business.datasource.network.main.SearchApiServiceImpl
 import com.aliexpressshoppingbd.ali2bd.presentation.cart.data.api_service.CartApiService
 import com.aliexpressshoppingbd.ali2bd.presentation.cart.data.api_service.CartApiServiceImpl
+import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.api_service.CategoriesApiService
+import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.api_service.CategoriesApiServiceImpl
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.data.api_service.ProductListApiService
 import com.aliexpressshoppingbd.ali2bd.presentation.productlist.data.api_service.ProductListApiServiceImpl
 import com.aliexpressshoppingbd.ali2bd.presentation.search.data.api_service.SearchApiService
@@ -13,6 +15,7 @@ val dataModule = module {
     single<SearchApiService> { SearchApiServiceImpl(get()) }
     single<ProductListApiService> { ProductListApiServiceImpl(get()) }
     single<CartApiService> { CartApiServiceImpl(get()) }
+    single<CategoriesApiService> { CategoriesApiServiceImpl(get()) }
     single {
         KtorHttpClient.httpClient()
     }

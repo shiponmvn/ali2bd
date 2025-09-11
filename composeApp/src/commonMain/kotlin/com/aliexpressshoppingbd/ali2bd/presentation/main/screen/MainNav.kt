@@ -28,9 +28,10 @@ import com.aliexpressshoppingbd.ali2bd.main.components.MainBottomNavigationBar
 import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationDestinations
 import com.aliexpressshoppingbd.ali2bd.main.navigation.MainNavigationItem
 import com.aliexpressshoppingbd.ali2bd.main.screens.AccountScreen
-import com.aliexpressshoppingbd.ali2bd.main.screens.CategoryScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.cart.presentation.viewmodel.CartViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.cart.screen.CartScreen
+import com.aliexpressshoppingbd.ali2bd.presentation.categories.presentation.viewmodel.CategoriesViewModel
+import com.aliexpressshoppingbd.ali2bd.presentation.categories.screen.CategoriesScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.home.presentation.viewmodel.HomeViewModel
 import com.aliexpressshoppingbd.ali2bd.presentation.home.screen.HomeScreen
 import com.aliexpressshoppingbd.ali2bd.presentation.search.presentation.viewmodel.SearchViewModel
@@ -131,7 +132,8 @@ fun MainNav(
             }
 
             composable< MainNavigationDestinations.Category> {
-                CategoryScreen()
+                val cartViewModel: CategoriesViewModel = koinInject()
+                CategoriesScreen(viewModel = cartViewModel)
             }
 
             composable< MainNavigationDestinations.Cart> {
