@@ -26,6 +26,13 @@ class CategoriesApiServiceImpl(
                 "Automotive & Motorcycle",
                 "Women's Clothing",
                 "Beauty & Health",
+                "Electronics",
+                "Sports & Entertainment",
+                "Jewelry, Watches & Accessories",
+                "Home Improvement & Lighting",
+                "Automotive & Motorcycle",
+                "Women's Clothing",
+                "Beauty & Health",
                 "Electronics"
             ).map { CategoryItem(it, it.lowercase().replace(" & ", "-").replace("'s ", "-").replace(", ", "-")) }
         )
