@@ -110,7 +110,7 @@ fun CategoryProductsGrid(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 300.dp) // Limit grid height
+                        .heightIn(max = 600.dp) // Limit grid height
                 ) {
                     items(product.children) { prod ->
                         ProductGridItem(
