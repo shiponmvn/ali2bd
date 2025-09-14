@@ -17,8 +17,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -231,64 +229,4 @@ fun CategoryProductsEmpty(modifier: Modifier = Modifier) {
             textAlign = TextAlign.Center
         )
     }
-// Custom FlowRow implementation for more efficient grid display
-@Composable
-fun FlowRow(
-    modifier: Modifier = Modifier,
-    maxItemsInEachRow: Int,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
-    content: @Composable () -> Unit
-) {
-    Layout(
-        content = content,
-        modifier = modifier
-    ) { measurables, constraints ->
-        val rows = mutableListOf<List<Placeable>>()
-        val itemWidth = (constraints.maxWidth / maxItemsInEachRow)
-        val itemConstraints = constraints.copy(maxWidth = itemWidth)
-
-        var currentRow = mutableListOf<Placeable>()
-        var currentRowWidth = 0
-
-        measurables.forEach { measurable ->
-            val placeable = measurable.measure(itemConstraints)
-
-            if (currentRow.size >= maxItemsInEachRow) {
-                rows.add(currentRow)
-                currentRow = mutableListOf()
-                currentRowWidth = 0
-            }
-
-            currentRow.add(placeable)
-            currentRowWidth += placeable.width
-        }
-
-        if (currentRow.isNotEmpty()) {
-            rows.add(currentRow)
-        }
-
-        // Get the spacing in pixels - simplified to avoid roundToPx issues
-        val verticalSpacingPx = 8 // Using a fixed 8px instead of verticalArrangement.spacing.roundToPx()
-
-        val height = rows.sumOf { row ->
-            row.maxOfOrNull { it.height } ?: 0
-        } + (rows.size - 1) * verticalSpacingPx
-
-        layout(constraints.maxWidth, height) {
-            var y = 0
-
-            rows.forEach { row ->
-                var x = 0
-
-                row.forEach { placeable ->
-                    placeable.place(x, y)
-                    x += itemWidth
-                }
-
-                y += (row.maxOfOrNull { it.height } ?: 0) + verticalSpacingPx
-            }
-        }
-    }
-}
 }
