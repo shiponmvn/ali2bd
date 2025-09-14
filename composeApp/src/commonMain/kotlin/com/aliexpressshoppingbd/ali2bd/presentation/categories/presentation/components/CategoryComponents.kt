@@ -93,7 +93,7 @@ fun CategoryProductsGrid(
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(products) { product ->
+        items(products, key = {it.id}) { product ->
             Column {
                 // Category title
                 Text(
@@ -110,7 +110,7 @@ fun CategoryProductsGrid(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 600.dp) // Limit grid height
+                        .height(600.dp) // Limit grid height
                 ) {
                     items(product.children) { prod ->
                         ProductGridItem(

@@ -1,5 +1,6 @@
 package com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -50,6 +51,7 @@ data class AppDrawer(
 )
 
 @Serializable
+@Immutable
 data class CategoryMenuItem(
     @SerialName("id") val id: Int = 0,
     @SerialName("title") val title: String = "",
