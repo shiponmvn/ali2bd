@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res.CategoryMenuItem
 import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res.ProductItem
 import com.aliexpressshoppingbd.ali2bd.presentation.categories.presentation.components.*
 import com.aliexpressshoppingbd.ali2bd.presentation.categories.presentation.viewmodel.CategoriesViewModel
@@ -21,7 +22,7 @@ fun CategoriesScreen(
     onNavigateBack: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val selectedCategoryId = viewModel.selectedCategoryId
+    val selectedCategoryMenu = viewModel.selectedCategoryMenu
 
     Scaffold(
         topBar = {
@@ -52,7 +53,7 @@ fun CategoriesScreen(
                 uiState.categories.isNotEmpty() -> {
                     CategoriesContent(
                         categories = uiState.categories,
-                        selectedCategoryId = selectedCategoryId,
+                        selectedCategory = selectedCategoryMenu,
                         products = uiState.products,
                         isProductsLoading = uiState.isProductsLoading,
                         productsError = uiState.productsError,
@@ -68,13 +69,13 @@ fun CategoriesScreen(
 
 @Composable
 private fun CategoriesContent(
-    categories: List<com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res.CategoryItem>,
-    selectedCategoryId: String?,
-    products: List<ProductItem>,
+    categories: List<CategoryMenuItem>,
+    selectedCategory: CategoryMenuItem?,
+    products: List<CategoryMenuItem>,
     isProductsLoading: Boolean,
     productsError: String?,
-    onCategoryClick: (String) -> Unit,
-    onProductClick: (ProductItem) -> Unit,
+    onCategoryClick: (CategoryMenuItem) -> Unit,
+    onProductClick: (CategoryMenuItem) -> Unit,
     onRetryLoadProducts: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -82,7 +83,7 @@ private fun CategoriesContent(
         // Left side: Categories sidebar (30% width)
         CategoriesSidebar(
             categories = categories,
-            selectedCategoryId = selectedCategoryId,
+            selectedCategory = selectedCategory,
             onCategoryClick = onCategoryClick,
             modifier = Modifier
                 .fillMaxHeight()

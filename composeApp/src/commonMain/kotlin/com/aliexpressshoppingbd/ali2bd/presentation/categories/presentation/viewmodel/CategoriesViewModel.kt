@@ -3,8 +3,7 @@ package com.aliexpressshoppingbd.ali2bd.presentation.categories.presentation.vie
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res.CategoryItem
+import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res.CategoryMenuItem
 import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res.ProductItem
 import com.aliexpressshoppingbd.ali2bd.presentation.categories.domain.usecase.category.CategoryListUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +21,7 @@ class CategoriesViewModel(
     private val _uiState = MutableStateFlow(CategoriesUiState())
     val uiState: StateFlow<CategoriesUiState> = _uiState.asStateFlow()
 
-    var selectedCategoryId: String? by mutableStateOf(null)
+    var selectedCategoryMenu: CategoryMenuItem? by mutableStateOf(null)
         private set
 
     init {
@@ -44,7 +43,7 @@ class CategoriesViewModel(
 
                     // Select first category by default and load its products
                     if (categories.isNotEmpty()) {
-                        selectCategory(categories.first().id)
+                        selectCategory(categories.first())
                     }
                 }.onFailure { error ->
                     _uiState.value = _uiState.value.copy(
@@ -61,35 +60,20 @@ class CategoriesViewModel(
         }
     }
 
-    fun selectCategory(categoryId: String) {
-        selectedCategoryId = categoryId
-        loadCategoryProducts(categoryId)
+    fun selectCategory(selectedCategory: CategoryMenuItem) {
+        selectedCategoryMenu = selectedCategory;
+        loadCategoryProducts(selectedCategory)
     }
 
-    private fun loadCategoryProducts(categoryId: String) {
+    private fun loadCategoryProducts(selectedCategory: CategoryMenuItem) {
         coroutineScope.launch {
-            _uiState.value = _uiState.value.copy(isProductsLoading = true)
 
-            try {
-                val productsResult = categoryListUseCase.getCategoryProducts(categoryId)
-                productsResult.onSuccess { products ->
-                    _uiState.value = _uiState.value.copy(
-                        products = products,
-                        isProductsLoading = false,
-                        productsError = null
-                    )
-                }.onFailure { error ->
-                    _uiState.value = _uiState.value.copy(
-                        isProductsLoading = false,
-                        productsError = error.message ?: "Unknown error occurred"
-                    )
-                }
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    isProductsLoading = false,
-                    productsError = e.message ?: "Unknown error occurred"
-                )
-            }
+            _uiState.value = _uiState.value.copy(
+                products = selectedCategory.children,
+                isProductsLoading = false,
+                productsError = null
+            )
+
         }
     }
 
@@ -98,13 +82,13 @@ class CategoriesViewModel(
     }
 
     fun retryLoadingProducts() {
-        selectedCategoryId?.let { loadCategoryProducts(it) }
+        selectedCategoryMenu?.let { loadCategoryProducts(it) }
     }
 }
 
 data class CategoriesUiState(
-    val categories: List<CategoryItem> = emptyList(),
-    val products: List<ProductItem> = emptyList(),
+    val categories: List<CategoryMenuItem> = emptyList(),
+    val products: List<CategoryMenuItem> = emptyList(),
     val isCategoriesLoading: Boolean = false,
     val isProductsLoading: Boolean = false,
     val categoriesError: String? = null,

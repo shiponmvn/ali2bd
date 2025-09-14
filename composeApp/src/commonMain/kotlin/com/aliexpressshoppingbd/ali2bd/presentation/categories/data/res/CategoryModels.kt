@@ -1,13 +1,13 @@
 package com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res
 
-data class CategoryItem(
+/*data class CategoryItem(
     val name: String,
     val id: String
-)
+)*/
 
-data class CategoriesResponse(
+/*data class CategoriesResponse(
     val categories: List<CategoryItem> = emptyList()
-)
+)*/
 
 data class ProductItem(
     val id: String,

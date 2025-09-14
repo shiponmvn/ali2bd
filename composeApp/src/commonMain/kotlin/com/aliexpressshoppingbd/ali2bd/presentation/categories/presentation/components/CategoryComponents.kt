@@ -21,17 +21,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.aliexpressshoppingbd.ali2bd.presentation.cart.presentation.components.CartItemComponent
+import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res.CategoryMenuItem
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
-import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res.CategoryItem
 import com.aliexpressshoppingbd.ali2bd.presentation.categories.data.res.ProductItem
 
 // Categories Sidebar Component
 @Composable
 fun CategoriesSidebar(
-    categories: List<CategoryItem>,
-    selectedCategoryId: String?,
-    onCategoryClick: (String) -> Unit,
+    categories: List<CategoryMenuItem>,
+    selectedCategory: CategoryMenuItem?,
+    onCategoryClick: (CategoryMenuItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -40,11 +41,11 @@ fun CategoriesSidebar(
             .background(Color(0xFFF5F5F5))
     ) {
         items(categories) { category ->
-            val isSelected = category.id == selectedCategoryId
+            val isSelected = category.id == selectedCategory?.id
             CategoryItem(
-                name = category.name,
+                name = category.title,
                 isSelected = isSelected,
-                onClick = { onCategoryClick(category.id) }
+                onClick = { onCategoryClick(category) }
             )
         }
     }
@@ -81,27 +82,52 @@ fun CategoryItem(
 // Products Grid Component
 @Composable
 fun CategoryProductsGrid(
-    products: List<ProductItem>,
-    onProductClick: (ProductItem) -> Unit,
+    products: List<CategoryMenuItem>,
+    onProductClick: (CategoryMenuItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = 10.dp),
         contentPadding = PaddingValues(8.dp),
-        modifier = modifier.fillMaxSize()
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(products) { product ->
-            ProductGridItem(
-                product = product,
-                onClick = { onProductClick(product) }
-            )
+            Column {
+                // Category title
+                Text(
+                    text = product.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                // Grid for this category's children
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    contentPadding = PaddingValues(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 300.dp) // Limit grid height
+                ) {
+                    items(product.children) { prod ->
+                        ProductGridItem(
+                            product = prod,
+                            onClick = { onProductClick(prod) }
+                        )
+                    }
+                }
+            }
         }
     }
 }
 
+
 @Composable
 fun ProductGridItem(
-    product: ProductItem,
+    product: CategoryMenuItem,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -121,7 +147,7 @@ fun ProductGridItem(
                 .background(Color.White)
         ) {
             KamelImage(
-                resource = asyncPainterResource(product.imageUrl),
+                resource = asyncPainterResource(product.image ?: ""),
                 contentDescription = product.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
