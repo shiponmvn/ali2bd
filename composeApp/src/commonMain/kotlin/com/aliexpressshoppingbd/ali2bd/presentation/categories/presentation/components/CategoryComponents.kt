@@ -94,7 +94,7 @@ fun CategoryProductsGrid(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(products, key = {it.id}) { product ->
-            Column {
+            Column (modifier= Modifier.fillMaxWidth()){
                 // Category title
                 Text(
                     text = product.title,
@@ -110,7 +110,7 @@ fun CategoryProductsGrid(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(600.dp) // Limit grid height
+                        .heightIn(max = 500.dp) // Limit grid height
                 ) {
                     items(product.children) { prod ->
                         ProductGridItem(
@@ -123,6 +123,7 @@ fun CategoryProductsGrid(
         }
     }
 }
+
 
 
 @Composable

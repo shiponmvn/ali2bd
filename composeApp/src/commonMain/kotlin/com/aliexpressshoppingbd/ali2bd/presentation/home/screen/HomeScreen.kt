@@ -1,11 +1,15 @@
 package com.aliexpressshoppingbd.ali2bd.presentation.home.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -55,122 +59,95 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
+        Column(
+            Modifier.fillMaxSize().padding(paddingValues).verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp),
-            state = lazyListState
-        ) {
+
+            ) {
             // Search bar
-            item(key = "HomeSearchSection") {
-                HomeSearchSection(
-                    onSearchClick = navigateToSearch,
-                    onVoiceClick = { /* Handle voice search */ },
+
+
+            HomeSearchSection(
+                onSearchClick = navigateToSearch,
+                onVoiceClick = { /* Handle voice search */ },
+            )
+
+
+            CategoriesSection(
+                categories = uiCategoryState.categories,
+                onCategoryClick = { category ->
+                    // Navigate to category page
+                },
+                onViewAllClick = {
+                    // Navigate to all categories
+                }
+            )
+
+            PromotionalBannerSection(
+                banners = uiPromoBannerState.banners,
+                onBannerClick = { banner ->
+                    // Navigate to sale page
+                }
+            )
+            if (section1 != null) {
+                FeaturedProductsSection(
+                    productSectionModel = section1,
+                    onProductClick = { product ->
+                        // Navigate to product details
+                    },
+                    onWishlistClick = { product ->
+                        // Toggle wishlist
+                    },
+                    onViewAllClick = {
+                        // Navigate to all featured products
+                    }
+                )
+            }
+            if (section2 != null) {
+                FeaturedProductsSection(
+                    productSectionModel = section2,
+                    onProductClick = { product ->
+                        // Navigate to product details
+                    },
+                    onWishlistClick = { product ->
+                        // Toggle wishlist
+                    },
+                    onViewAllClick = {
+                        // Navigate to all featured products
+                    }
                 )
             }
 
-            // Categories
-            item(key = "CategoriesSection") {
-                key(uiCategoryState.categories.hashCode()) {
-                    CategoriesSection(
-                        categories = uiCategoryState.categories,
-                        onCategoryClick = { category ->
-                            // Navigate to category page
-                        },
-                        onViewAllClick = {
-                            // Navigate to all categories
-                        }
-                    )
-                }
-            }
-
-            // Promo banners
-            item(key = "PromotionalBannerSection") {
-                key(uiPromoBannerState.banners.hashCode()) {
-                    PromotionalBannerSection(
-                        banners = uiPromoBannerState.banners,
-                        onBannerClick = { banner ->
-                            // Navigate to sale page
-                        }
-                    )
-                }
-            }
-
-            // Featured products - Section 1
-            item(key = "FeaturedProductsSection1") {
-                key(section1.hashCode()) {
-                    FeaturedProductsSection(
-                        productSectionModel = section1,
-                        onProductClick = { product ->
-                            // Navigate to product details
-                        },
-                        onWishlistClick = { product ->
-                            // Toggle wishlist
-                        },
-                        onViewAllClick = {
-                            // Navigate to all featured products
-                        }
-                    )
-                }
-            }
-
-            // Featured products - Section 2
-            item(key = "FeaturedProductsSection2") {
-                key(section2.hashCode()) {
-                    FeaturedProductsSection(
-                        productSectionModel = section2,
-                        onProductClick = { product ->
-                            // Navigate to product details
-                        },
-                        onWishlistClick = { product ->
-                            // Toggle wishlist
-                        },
-                        onViewAllClick = {
-                            // Navigate to all featured products
-                        }
-                    )
-                }
-            }
-
-            // Optional additional sections based on data availability
             if (section3 != null) {
-                item(key = "FeaturedProductsSection3") {
-                    key(section3.hashCode()) {
-                        FeaturedProductsSection(
-                            productSectionModel = section3,
-                            onProductClick = { product ->
-                                // Navigate to product details
-                            },
-                            onWishlistClick = { product ->
-                                // Toggle wishlist
-                            },
-                            onViewAllClick = {
-                                // Navigate to all featured products
-                            }
-                        )
+                FeaturedProductsSection(
+                    productSectionModel = section3,
+                    onProductClick = { product ->
+                        // Navigate to product details
+                    },
+                    onWishlistClick = { product ->
+                        // Toggle wishlist
+                    },
+                    onViewAllClick = {
+                        // Navigate to all featured products
                     }
-                }
+                )
+            }
+            if (section4 != null) {
+                FeaturedProductsSection(
+                    productSectionModel = section4,
+                    onProductClick = { product ->
+                        // Navigate to product details
+                    },
+                    onWishlistClick = { product ->
+                        // Toggle wishlist
+                    },
+                    onViewAllClick = {
+                        // Navigate to all featured products
+                    }
+                )
             }
 
-            if (section4 != null) {
-                item(key = "FeaturedProductsSection4") {
-                    key(section4.hashCode()) {
-                        FeaturedProductsSection(
-                            productSectionModel = section4,
-                            onProductClick = { product ->
-                                // Navigate to product details
-                            },
-                            onWishlistClick = { product ->
-                                // Toggle wishlist
-                            },
-                            onViewAllClick = {
-                                // Navigate to all featured products
-                            }
-                        )
-                    }
-                }
-            }
+
         }
     }
 }

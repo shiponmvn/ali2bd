@@ -99,7 +99,39 @@ android {
         }
     }
     buildTypes {
+        signingConfigs {
+            create("release") {
+                val storeFilePath = project.findProperty("RELEASE_STORE_FILE") as String
+                val storePasswordProp = project.findProperty("RELEASE_STORE_PASSWORD") as String
+                val keyAliasProp = project.findProperty("RELEASE_KEY_ALIAS") as String
+                val keyPasswordProp = project.findProperty("RELEASE_KEY_PASSWORD") as String
+
+
+                    storeFile = file(storeFilePath)
+                    storePassword = storePasswordProp
+                    keyAlias = keyAliasProp
+                    keyPassword = keyPasswordProp
+
+            }
+        }
         getByName("release") {
+            // Enables code shrinking, obfuscation, and optimization with R8
+            isMinifyEnabled = true
+
+            // Enables resource shrinking (removes unused resources)
+            isShrinkResources = true
+
+            // Uses the default ProGuard / R8 rules file
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            // Optional: Sign your release build (if you have a keystore)
+            signingConfig = signingConfigs.getByName("release")
+        }
+
+        getByName("debug") {
             isMinifyEnabled = false
         }
     }
