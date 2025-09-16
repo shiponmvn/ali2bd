@@ -17,3 +17,18 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 /composeApp/properties/
+
+# Log files
+hs_err_pid*.log
+replay_pid*.log
+
+# Generated files
+/ali2bd
+
+# Gradle files
+.gradle/
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+/composeApp/release/
