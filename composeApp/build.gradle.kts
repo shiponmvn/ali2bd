@@ -1,5 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,6 +9,13 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     kotlin("plugin.serialization") version "1.9.20"
+}
+
+// Load key.properties file
+val keystorePropertiesFile = rootProject.file("composeApp/properties/key.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
 kotlin {
@@ -101,17 +110,10 @@ android {
     buildTypes {
         signingConfigs {
             create("release") {
-                val storeFilePath = project.findProperty("RELEASE_STORE_FILE") as String
-                val storePasswordProp = project.findProperty("RELEASE_STORE_PASSWORD") as String
-                val keyAliasProp = project.findProperty("RELEASE_KEY_ALIAS") as String
-                val keyPasswordProp = project.findProperty("RELEASE_KEY_PASSWORD") as String
-
-
-                    storeFile = file(storeFilePath)
-                    storePassword = storePasswordProp
-                    keyAlias = keyAliasProp
-                    keyPassword = keyPasswordProp
-
+                storeFile = file(keystoreProperties["STORE_FILE_PATH"] as String)
+                storePassword = keystoreProperties["RELEASE_STORE_PASSWORD"] as String
+                keyAlias = keystoreProperties["RELEASE_KEY_ALIAS"] as String
+                keyPassword = keystoreProperties["RELEASE_KEY_PASSWORD"] as String
             }
         }
         getByName("release") {
